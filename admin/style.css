@@ -1,0 +1,123 @@
+        .main-header .form[role=search] {
+            top: 0px;
+            right: 0;
+            width: 100%;
+            padding: 0px;
+            margin: 0px;
+            z-index: 0;
+            width: 38px;
+        }
+
+        .app-sidebar .slide.is-expanded .side-menu__item {
+            background: linear-gradient(45deg, #3A7F00, #C9FFD7);
+        }
+
+        .slide:hover .side-menu__item, .side-menu__item.active {
+            background: linear-gradient(45deg, #3A7F00, #C9FFD7);
+        }
+
+        .main-content:after {
+            background: linear-gradient(45deg, #E9E7F7, #E9E7F7);
+        }
+
+        .main-header.side-header.fixed-header {
+            background: linear-gradient(45deg, #3A7F00, #C9FFD7);
+        }
+
+        .header-img {
+            background: linear-gradient(45deg, #3A7F00, #C9FFD7);
+        }
+
+        .app-sidebar, .main-sidebar-header {
+            background: #E9FFEE;
+        }
+
+        .sidebar-navs a {
+            background: rgb(0 0 0);
+            border: 1px solid #000000 !important;
+            color: #ffffff !important;
+        }
+
+        .sidebar-navs a:hover {
+            background: rgb(255 0 0);
+            border: 1px solid #fff !important;
+            color: #ffffff !important;
+        }
+
+        .breadcrumb {
+            background-color: #000000;
+        }
+
+        .btn-success {
+            color: #fff;
+            background: #278f00 !important;
+            border-color: #278f00;
+        }
+
+        .main-logo {
+            height: 47px;
+        }
+
+        .fa-arrow-circle-o-left:after {
+            content: "<<";
+            background-color: green;
+            color: white;
+            padding: 10px;
+            border-radius: 50%;
+            font-size: 16px;
+            height: 50px;
+            width: 50px;
+        }
+
+        .shining-card {
+            position: relative;
+        }
+        .shining-card:before {
+            content: "";
+            position: absolute;
+            height: 100px;
+            width: 2px;
+            background: linear-gradient(100deg, #3A7F00, transparent);
+        }
+        .shining-card:after {
+            content: "";
+            position: absolute;
+            height: 2px;
+            width: 100px;
+            background: linear-gradient(50deg, #3A7F00, transparent);
+        }
+
+        .fa-arrow-circle-o-right:after {
+            content: ">>";
+            background-color: green;
+            color: white;
+            padding: 10px;
+            border-radius: 50%;
+            font-size: 16px;
+            height: 50px;
+            width: 50px;
+        }
+
+        .main-header {
+            background: linear-gradient(45deg, #3b3b3b, #000000) !important;
+        }
+
+        @media (max-width: 767px) {
+            .main-header {
+                background: linear-gradient(45deg, #3b3b3b, #000000) !important;
+            }
+        }
+
+        @media (max-width: 991px) {
+            .responsive-logo .header-logo .logo-1 {
+                background-color: white;
+                padding: 2px;
+                border-radius: 2px;
+            }
+        }
+
+        @media (max-width: 991px) {
+            .responsive-navbar.navbar .navbar-collapse {
+                background: linear-gradient(45deg, #3b3b3b, #010400);
+            }
+        }
