@@ -47,11 +47,12 @@ $verify_note = 'Pending Admin Approval (' . strtoupper($network) . ')';
 if($network === 'trc20' && !empty($tranid) && !empty($trc20_wallet)) {
     $ch = curl_init();
     curl_setopt_array($ch, [
-        CURLOPT_URL            => "https://apilist.tronscanapi.com/api/transaction-info?hash=" . urlencode($tranid),
-        CURLOPT_RETURNTRANSFER => true,
-        CURLOPT_TIMEOUT        => 15,
-        CURLOPT_USERAGENT      => 'Mozilla/5.0',
-        CURLOPT_SSL_VERIFYPEER => false,
+        CURLOPT_URL             => "https://apilist.tronscanapi.com/api/transaction-info?hash=" . urlencode($tranid),
+        CURLOPT_RETURNTRANSFER  => true,
+        CURLOPT_TIMEOUT         => 15,
+        CURLOPT_FOLLOWLOCATION  => true,
+        CURLOPT_USERAGENT       => 'Mozilla/5.0',
+        CURLOPT_SSL_VERIFYPEER  => false,
     ]);
     $response = curl_exec($ch);
     curl_close($ch);
@@ -71,11 +72,13 @@ if($network === 'trc20' && !empty($tranid) && !empty($trc20_wallet)) {
             $raw_amount   = floatval($transfer['amount_str'] ?? 0);
             $decimals     = intval($transfer['decimals']     ?? 6);
             $tx_amount    = $raw_amount / pow(10, $decimals);
+            // confirmed can be bool true OR int 1 from TronScan
+            $is_confirmed = !empty($confirmed);
 
             if(
                 strtolower($to_address)   == strtolower($trc20_wallet) &&
                 strtoupper($token_symbol) == 'USDT' &&
-                $confirmed == true &&
+                $is_confirmed &&
                 abs($tx_amount - $amount) < 0.01
             ) {
                 $verified    = true;
@@ -96,11 +99,12 @@ if($network === 'trc20' && !empty($tranid) && !empty($trc20_wallet)) {
 elseif($network === 'bep20' && !empty($tranid) && !empty($bep20_wallet)) {
     $ch = curl_init();
     curl_setopt_array($ch, [
-        CURLOPT_URL            => "https://api.bscscan.com/api?module=proxy&action=eth_getTransactionByHash&txhash=" . urlencode($tranid),
-        CURLOPT_RETURNTRANSFER => true,
-        CURLOPT_TIMEOUT        => 15,
-        CURLOPT_USERAGENT      => 'Mozilla/5.0',
-        CURLOPT_SSL_VERIFYPEER => false,
+        CURLOPT_URL             => "https://api.bscscan.com/api?module=proxy&action=eth_getTransactionByHash&txhash=" . urlencode($tranid),
+        CURLOPT_RETURNTRANSFER  => true,
+        CURLOPT_TIMEOUT         => 15,
+        CURLOPT_FOLLOWLOCATION  => true,
+        CURLOPT_USERAGENT       => 'Mozilla/5.0',
+        CURLOPT_SSL_VERIFYPEER  => false,
     ]);
     $response = curl_exec($ch);
     curl_close($ch);
@@ -113,11 +117,12 @@ elseif($network === 'bep20' && !empty($tranid) && !empty($bep20_wallet)) {
             // Get receipt for confirmation status
             $ch2 = curl_init();
             curl_setopt_array($ch2, [
-                CURLOPT_URL            => "https://api.bscscan.com/api?module=proxy&action=eth_getTransactionReceipt&txhash=" . urlencode($tranid),
-                CURLOPT_RETURNTRANSFER => true,
-                CURLOPT_TIMEOUT        => 15,
-                CURLOPT_USERAGENT      => 'Mozilla/5.0',
-                CURLOPT_SSL_VERIFYPEER => false,
+                CURLOPT_URL             => "https://api.bscscan.com/api?module=proxy&action=eth_getTransactionReceipt&txhash=" . urlencode($tranid),
+                CURLOPT_RETURNTRANSFER  => true,
+                CURLOPT_TIMEOUT         => 15,
+                CURLOPT_FOLLOWLOCATION  => true,
+                CURLOPT_USERAGENT       => 'Mozilla/5.0',
+                CURLOPT_SSL_VERIFYPEER  => false,
             ]);
             $receipt_resp = curl_exec($ch2);
             curl_close($ch2);
@@ -177,6 +182,7 @@ if(!$stmt->execute()) redirect('deposit?e=1');
 if($verified) {
     $remarks = 'USDT Deposit - ' . $verify_note;
     $conn->query("INSERT INTO imaksoft_deposit (userid, amount, remarks, date) VALUES ('$userid', '$amount', '$remarks', '$date')");
+    $conn->query("UPDATE imaksoft_member SET paystatus='A', status='A' WHERE userid='$userid' AND paystatus='I'");
     redirect('deposit?s=1&auto=1');
 } else {
     redirect('deposit?s=1&pending=1');

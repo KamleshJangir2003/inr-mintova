@@ -13,3 +13,5 @@ WHERE NOT EXISTS (SELECT 1 FROM `imaksoft_settings_qr`);
 
 -- Add screenshot column to mi_member_payment if not exists
 ALTER TABLE `mi_member_payment` ADD COLUMN IF NOT EXISTS `screenshot` varchar(255) DEFAULT '' AFTER `tranid`;
+ALTER TABLE `mi_member_payment` ADD COLUMN IF NOT EXISTS `network` varchar(10) DEFAULT 'trc20' AFTER `screenshot`;
+ALTER TABLE `mi_member_payment` ADD COLUMN IF NOT EXISTS `verify_note` varchar(255) DEFAULT '' AFTER `status`;

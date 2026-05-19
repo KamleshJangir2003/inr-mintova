@@ -129,7 +129,7 @@ include('menu.php');
     </div>
 
     <p class="text-gray-500 text-sm mt-6">
-      USDT TRC20 • Daily ROI • Level Income • Fast Withdrawals
+      Tron TRC20 • Daily ROI • Level Income • Fast Withdrawals
     </p>
   </div>
 </section>
@@ -141,7 +141,7 @@ include('menu.php');
   <div class="grid md:grid-cols-3 gap-6">
     <div class="p-6 bg-white/5 border border-white/10 rounded-xl">
       <h4 class="font-bold mb-2">Step 1 — Deposit & Activate</h4>
-      <p class="text-gray-300 text-sm">Start with just $10 using USDT TRC20 and instantly activate your staking plan.</p>
+      <p class="text-gray-300 text-sm">Start with just $10 using Tron TRC20 and instantly activate your staking plan.</p>
     </div>
     <div class="p-6 bg-white/5 border border-white/10 rounded-xl">
       <h4 class="font-bold mb-2">Step 2 — Earn Daily ROI</h4>
@@ -215,7 +215,7 @@ include('menu.php');
   <div class="grid md:grid-cols-3 gap-6">
     <div class="p-6 bg-white/5 border border-white/10 rounded-xl">
       <h4 class="font-bold mb-2">Instant Activation</h4>
-      <p class="text-gray-300 text-sm">Your staking plan activates immediately after depositing USDT TRC20.</p>
+      <p class="text-gray-300 text-sm">Your staking plan activates immediately after depositing Tron TRC20.</p>
     </div>
     <div class="p-6 bg-white/5 border border-white/10 rounded-xl">
       <h4 class="font-bold mb-2">Automated Daily ROI</h4>
@@ -246,7 +246,7 @@ include('menu.php');
   <h2 class="text-2xl font-bold mb-6">About Mintova</h2>
   <div class="p-6 bg-white/5 border border-white/10 rounded-xl leading-relaxed text-gray-300 text-sm">
     <p>Mintova is a next-generation crypto earning platform built to make digital income simple, accessible, and transparent for everyone. Our ecosystem allows users to grow their wealth through automated staking, daily ROI, referral rewards, and structured team bonuses.</p>
-    <p class="mt-4">Powered by USDT TRC20 technology, Mintova delivers fast transactions, real-time wallet tracking, and a smooth user experience. Whether you're a beginner starting with $10 or a leader building a global network, Mintova gives you the tools to earn smarter and scale faster.</p>
+    <p class="mt-4">Powered by Tron TRC20 technology, Mintova delivers fast transactions, real-time wallet tracking, and a smooth user experience. Whether you're a beginner starting with $10 or a leader building a global network, Mintova gives you the tools to earn smarter and scale faster.</p>
     <p class="mt-4">Our mission is simple: create a secure, reward-driven earning model where anyone can participate, grow, and achieve financial freedom through crypto.</p>
   </div>
 </section>
@@ -258,7 +258,7 @@ include('menu.php');
   <div class="space-y-4">
     <div class="p-5 bg-white/5 border border-white/10 rounded-xl">
       <h4 class="font-bold mb-2">How do I start earning?</h4>
-      <p class="text-gray-300 text-sm">Create your account, deposit USDT (TRC20) and activate any staking plan starting from just $10.</p>
+      <p class="text-gray-300 text-sm">Create your account, deposit Tron (TRC20) and activate any staking plan starting from just $10.</p>
     </div>
     <div class="p-5 bg-white/5 border border-white/10 rounded-xl">
       <h4 class="font-bold mb-2">When will I get my daily ROI?</h4>
@@ -270,7 +270,7 @@ include('menu.php');
     </div>
     <div class="p-5 bg-white/5 border border-white/10 rounded-xl">
       <h4 class="font-bold mb-2">How fast are withdrawals processed?</h4>
-      <p class="text-gray-300 text-sm">Withdrawals are processed quickly through USDT TRC20 for fast blockchain settlement.</p>
+      <p class="text-gray-300 text-sm">Withdrawals are processed quickly through Tron TRC20 for fast blockchain settlement.</p>
     </div>
     <div class="p-5 bg-white/5 border border-white/10 rounded-xl">
       <h4 class="font-bold mb-2">Is there a limit on how much I can earn?</h4>

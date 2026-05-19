@@ -192,9 +192,6 @@ $left=2;
 </div>
 
 <?php
-// Auto-add BEP20 columns if not exist
-$conn->query("ALTER TABLE imaksoft_settings_qr ADD COLUMN IF NOT EXISTS bep20_wallet_address varchar(255) NOT NULL DEFAULT '' AFTER qr_image");
-$conn->query("ALTER TABLE imaksoft_settings_qr ADD COLUMN IF NOT EXISTS bep20_qr_image varchar(255) NOT NULL DEFAULT '' AFTER bep20_wallet_address");
 $qr_res = $conn->query("SELECT * FROM imaksoft_settings_qr LIMIT 1");
 $qr = $qr_res ? $qr_res->fetch_assoc() : null;
 ?>
@@ -229,23 +226,21 @@ $qr = $qr_res ? $qr_res->fetch_assoc() : null;
     <img id="qrImg" src="" style="width:200px;height:200px;border:2px solid #ffc107;display:none;" class="mb-2"><br>
     <div class="input-group mb-2">
         <input type="text" class="form-control" id="walletAddr" value="" readonly>
-        <button class="btn btn-outline-warning" onclick="copyAddr()">Copy</button>
+        <button class="btn btn-outline-warning" type="button" onclick="copyAddr()">Copy</button>
     </div>
 </div>
-<form method="post" action="deposit-submit" enctype="multipart/form-data">
-    <input type="hidden" name="userid" value="<?=$userid?>">
-    <input type="hidden" name="amount" id="hiddenAmt">
-    <input type="hidden" name="network" id="hiddenNetwork">
-    <div class="mb-3">
-        <label class="form-label">Transaction ID / Hash</label>
-        <input type="text" name="tranid" class="form-control" placeholder="Enter Transaction ID / Hash" required>
-    </div>
-    <div class="mb-3">
-        <label class="form-label">Upload Payment Screenshot</label>
-        <input type="file" name="screenshot" class="form-control" accept="image/*" required>
-    </div>
-    <button type="submit" class="btn btn-success w-100">Submit for Approval</button>
-</form>
+
+<!-- Auto detection status -->
+<div id="payStatus" class="alert alert-warning text-center mt-3" style="border-radius:12px;">
+    <div class="spinner-border spinner-border-sm text-warning me-2" role="status"></div>
+    <span id="payMsg">⏳ Waiting for your payment... (auto detecting)</span>
+</div>
+
+<div class="text-center mt-2">
+    <small class="text-muted">Payment will be detected automatically within 1-2 minutes after blockchain confirmation.</small>
+</div>
+
+<button class="btn btn-secondary w-100 mt-3" onclick="cancelPayment()">Cancel / Go Back</button>
 </div>
 
 <script>
@@ -253,6 +248,11 @@ var trc20Wallet = "<?=htmlspecialchars($qr['wallet_address'] ?? '')?>";
 var trc20QR     = "<?=!empty($qr['qr_image']) ? '../admin/uploads/qr/'.htmlspecialchars($qr['qr_image']) : ''?>";
 var bep20Wallet = "<?=htmlspecialchars($qr['bep20_wallet_address'] ?? '')?>";
 var bep20QR     = "<?=!empty($qr['bep20_qr_image']) ? '../admin/uploads/qr/'.htmlspecialchars($qr['bep20_qr_image']) : ''?>";
+var pollTimer   = null;
+var pollCount   = 0;
+var maxPolls    = 60; // 10 min max (60 x 10s)
+var currentAmt  = 0;
+var currentNet  = '';
 
 function showQR() {
     let amt = parseFloat(document.getElementById('enterAmount').value);
@@ -261,16 +261,62 @@ function showQR() {
     let wallet = net === 'bep20' ? bep20Wallet : trc20Wallet;
     let qrSrc  = net === 'bep20' ? bep20QR     : trc20QR;
     if(!wallet) { alert('This network is not configured yet. Please contact admin.'); return; }
+    currentAmt = amt;
+    currentNet = net;
     document.getElementById('showAmt').innerText = amt.toFixed(2);
     document.getElementById('showNetwork').innerText = net === 'bep20' ? 'BEP20' : 'TRC20';
-    document.getElementById('hiddenAmt').value = amt.toFixed(2);
-    document.getElementById('hiddenNetwork').value = net;
     document.getElementById('walletAddr').value = wallet;
     let qrEl = document.getElementById('qrImg');
     if(qrSrc) { qrEl.src = qrSrc; qrEl.style.display = 'inline-block'; } else { qrEl.style.display = 'none'; }
     document.getElementById('step1').style.display = 'none';
     document.getElementById('step2').style.display = 'block';
+    pollCount = 0;
+    startPolling();
 }
+
+function startPolling() {
+    pollTimer = setInterval(checkPayment, 10000);
+    checkPayment(); // immediate first check
+}
+
+function checkPayment() {
+    pollCount++;
+    if(pollCount > maxPolls) {
+        clearInterval(pollTimer);
+        document.getElementById('payStatus').className = 'alert alert-danger text-center mt-3';
+        document.getElementById('payMsg').innerHTML = '❌ Payment not detected in 10 minutes. Please contact support.';
+        return;
+    }
+    fetch('check-payment', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+        body: 'amount=' + currentAmt + '&network=' + currentNet
+    })
+    .then(r => r.json())
+    .then(data => {
+        if(data.status === 'success' || data.status === 'already') {
+            clearInterval(pollTimer);
+            document.getElementById('payStatus').className = 'alert alert-success text-center mt-3';
+            document.getElementById('payMsg').innerHTML = '✅ Payment Verified & Approved! Redirecting...';
+            setTimeout(() => { window.location.href = 'deposit?s=1&auto=1'; }, 2000);
+        } else if(data.status === 'waiting') {
+            document.getElementById('payMsg').innerHTML = '⏳ Waiting for payment... (check #' + pollCount + ')';
+        } else {
+            document.getElementById('payMsg').innerHTML = '⚠️ ' + (data.msg || 'Checking...');
+        }
+    })
+    .catch(() => {
+        document.getElementById('payMsg').innerHTML = '⏳ Checking... (attempt #' + pollCount + ')';
+    });
+}
+
+function cancelPayment() {
+    clearInterval(pollTimer);
+    document.getElementById('step2').style.display = 'none';
+    document.getElementById('step1').style.display = 'block';
+    document.getElementById('enterAmount').value = '';
+}
+
 function copyAddr() {
     let addr = document.getElementById('walletAddr');
     addr.select(); document.execCommand('copy'); alert('Address copied!');
@@ -309,8 +355,7 @@ $offset = ($page - 1) * $limit;
 // Get current user's ID
 $userid = getMember($conn, $_SESSION['mid'], 'userid');
 
-// Query to fetch data securely using prepared statements
-$query = "SELECT amount,status, date FROM transaction WHERE userid = ? ORDER BY id DESC LIMIT ?, ?";
+$query = "SELECT amount, remarks AS status, date FROM imaksoft_deposit WHERE userid = ? ORDER BY id DESC LIMIT ?, ?";
 $stmt = $conn->prepare($query);
 $stmt->bind_param("sii", $userid, $offset, $limit);
 $stmt->execute();
@@ -321,13 +366,13 @@ $result = $stmt->get_result();
 <tr >
 <th align="center">Sl_No</th>
 <th align="center">Amount</th>
-<th align="center">Status</th>
+<th align="center">Remarks</th>
 <th align="center">Date</th>
 </tr>
 </thead>
 <tbody>
   <?php
-                    $i = $offset + 1; // Start serial number correctly
+                    $i = $offset + 1;
                     if ($result->num_rows > 0) {
                         while ($row = $result->fetch_assoc()) {
                             echo "<tr>
@@ -339,7 +384,7 @@ $result = $stmt->get_result();
                             $i++;
                         }
                     } else {
-                        echo '<tr><td colspan="3" class="text-danger">No Record Found!</td></tr>';
+                        echo '<tr><td colspan="4" class="text-danger">No Record Found!</td></tr>';
                     }
                     ?>
 </tbody>
