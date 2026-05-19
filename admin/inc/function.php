@@ -864,7 +864,7 @@ return $total;
 
 function getAvailableFundWallet($conn,$userid)
 {
-$total=(getDepositMember($conn,$userid)+geTotalCommission($conn,$userid)+getPaymentApprovedOnline($conn,$userid))-(getDeductMember($conn,$userid)+getMemberInvestment($conn,$userid)+getWithdrawalMember1($conn,$userid));
+$total=(getDepositMember($conn,$userid)+geTotalCommission($conn,$userid))-(getDeductMember($conn,$userid)+getMemberInvestment($conn,$userid)+getWithdrawalMember1($conn,$userid));
 
 return $total;
 }
