@@ -89,23 +89,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $stmt2->bind_param("ssddssss", $userid, $type, $amount, $charge, $payout, $api, $date, $status);
                 $stmt2->execute();
 
-                // Redirect to external API if successful
-                if ($stmt->affected_rows > 0 && $stmt2->affected_rows > 0) {
-                    ?>
-                    <form id="redirectForm" action="https://paycrypto.live/payout-processv1" method="post">
-                        <input type="hidden" name="userid" value="<?=$userid?>">
-                        <input type="hidden" name="type" value="<?=$type?>">
-                        <input type="hidden" name="amount" value="<?=$amount?>">
-                        <input type="hidden" name="charges" value="<?=$charge?>">
-                        <input type="hidden" name="final" value="<?=$payout?>">
-                        <input type="hidden" name="api" value="<?=$api?>">
-                        <input type="hidden" name="hash" value="<?=$hash?>">
-                        <input type="hidden" name="wallet_address" value="<?=$wallet_address?>">
-                    </form>
-                    <script>
-                        document.getElementById('redirectForm').submit();
-                    </script>
-                    <?php
+                // Redirect after successful insert
+                if ($stmt->affected_rows > 0) {
+                    redirect('withdraw?case=new&p=1');
                 } else {
                     redirect('withdraw?case=new&e=5'); // Insert failed
                 }
