@@ -84,7 +84,8 @@ $num = mysqli_num_rows($result);
                 echo "<td>{$fetch['bitcoin']}</td>";
                               echo "<td>";
 if ($fetch['status'] == 'P') {
-    echo "<a href='withdrawal-process?case=status&id={$fetch['id']}&page=" . ($_REQUEST['page'] ?? 1) . "' onClick=\"return confirm('Are you sure you want to activate this status?');\" style='text-decoration:none; color:#FF0000;'>Pending</a>";
+    echo "<a href='withdrawal-process?case=status&id={$fetch['id']}&page=" . ($_REQUEST['page'] ?? 1) . "' onClick=\"return confirm('Approve this withdrawal?');\" class='btn btn-sm btn-success me-1'>Approve</a>";
+    echo "<a href='withdrawal-process?case=reject&id={$fetch['id']}&page=" . ($_REQUEST['page'] ?? 1) . "' onClick=\"return confirm('Reject this withdrawal?');\" class='btn btn-sm btn-danger'>Reject</a>";
 } else {
     echo "<span style='color:green;'>Completed</span>";
 }

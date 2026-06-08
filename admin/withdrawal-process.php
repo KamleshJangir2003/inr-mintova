@@ -16,6 +16,14 @@ $res=query($conn,$sql);
 redirect('withdrawal?case=pen&page='.mysqli_real_escape_string($conn,$_REQUEST['page']));
 }
 
+if($_REQUEST['case']=='reject')
+{
+$sql="UPDATE `imaksoft_withdrawal` SET `status`='F' WHERE `id`='".mysqli_real_escape_string($conn,$_REQUEST['id'])."'";
+$res=query($conn,$sql);
+
+redirect('withdrawal?case=fail&page='.mysqli_real_escape_string($conn,$_REQUEST['page']));
+}
+
 if($_REQUEST['case']=='delete')
 {
 $sql="DELETE FROM `imaksoft_withdrawal` WHERE `id`='".mysqli_real_escape_string($conn,$_REQUEST['id'])."'";
