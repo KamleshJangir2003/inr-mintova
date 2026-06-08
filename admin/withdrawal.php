@@ -272,7 +272,7 @@ $num = mysqli_num_rows($result);
                 echo "<td>{$fetch['request']}</td>";
                 echo "<td>{$fetch['payout']}</td>";
                 echo "<td>{$fetch['bitcoin']}</td>";
-                echo "<td>" . ($fetch['status'] == 'F' ? 'Pending' : 'Failed') . "</td>";
+                echo "<td><span style='color:#FF0000;font-weight:bold;'>Failed</span></td>";
                 echo "<td>{$fetch['date']}</td>";
 
                 echo "</tr>";
