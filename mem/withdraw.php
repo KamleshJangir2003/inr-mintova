@@ -161,7 +161,17 @@ $left=2;
 <?php }?>
 <?php if(($_REQUEST['e'] ?? null)==6){?>
     <div class="alert alert-danger text-center p-3 rounded ">
-        <i class="fe fe-check-circle"></i> <strong>Invalid Transaction Password!</strong>
+        <strong>Invalid Transaction Password!</strong>
+    </div>
+<?php }?>
+<?php if(($_REQUEST['e'] ?? null)==8 || ($_REQUEST['e'] ?? null)==1){?>
+    <div class="alert alert-danger text-center p-3 rounded ">
+        <strong>Minimum withdrawal ₹100 and must be in multiples of ₹100!</strong>
+    </div>
+<?php }?>
+<?php if(($_REQUEST['e'] ?? null)==9){?>
+    <div class="alert alert-danger text-center p-3 rounded ">
+        <strong>Withdrawal time is 8 AM to 10 PM only!</strong>
     </div>
 <?php }?>
 <?php if(($_REQUEST['e'] ?? null)==3){?><p align="center" style="color:#FF0000; padding-bottom:8px;">Amount must be greater than 0!</p><?php }?>
@@ -171,7 +181,7 @@ $left=2;
         <i class="fe fe-check-circle"></i> <strong>Insufficient wallet balance!</strong>
     </div>
 <?php }?>
-<?php if(($_REQUEST['e'] ?? null)==1){?><p align="center" style="color:#FF0000; padding-bottom:8px;font-size:16px;">Minimum withdrawal amount is <?=getSettingsWithdrawal($conn,'minimum')?></p><?php }?>
+
 
 <h4 class="form-section text-center">Wallet Balance: <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:middle;margin-right:2px;"><polygon points="12 2 2 19 22 19"/><line x1="12" y1="2" x2="12" y2="19"/><line x1="2" y1="19" x2="12" y2="10"/><line x1="22" y1="19" x2="12" y2="10"/></svg> <?=getAvailableFundWallet($conn,getMember($conn,$_SESSION['mid'],'userid'))?> USDT</h4>
 <p>&nbsp;</p>
@@ -184,19 +194,10 @@ $min=getSettingsWithdrawal($conn,'minimum');
 if($avabal >= $min){
     if(getMember($conn,$_SESSION['mid'],'bitcoin')!=''){
 
-        // Current day and hour check (Server Time)
-       $day = date('N'); // 1 = Monday, 5 = Friday
-$hour = date('G'); // 0–23
-$minute = date('i'); 
-$time = $hour + ($minute/60);
+        // Withdrawal allowed: Everyday 8AM to 10PM (IST)
+        $hour = date('G'); // 0-23
 
-// Allowed days: Monday (1) and Friday (5)
-$allowedDays = [1, 5];
-
-if (in_array($day, $allowedDays) && (
-        ($time >= 10 && $time < 14) ||
-        ($time >= 16 && $time < 22)
-    )) {
+        if ($hour >= 8 && $hour < 22) {
 
 ?>
 <h4 class="text-center mb-3">Enter Withdrawal Amount</h4>
@@ -228,6 +229,9 @@ if (in_array($day, $allowedDays) && (
         <input type="password" class="form-control" name="tpassword" placeholder="Transaction Password" id="tpassword" required />
     </div>
     <br>
+    <div class="alert alert-info p-2 mt-2" style="font-size:13px;">
+        💡 Min: <strong>₹100</strong> | Multiples of ₹100 only | <strong>10% admin charge</strong> deducted
+    </div>
     <button type="submit" class="btn btn-success w-100">Send Now</button>
 </form>
 
@@ -239,13 +243,13 @@ document.getElementById('withdrawForm').addEventListener('submit', function(e) {
         e.preventDefault();
         return;
     }
-
-    // Random withdrawal charge between 2.5% and 3.5%
-    // let chargePercent = Math.random() * (3.5 - 2.5) + 2.5;
-    let chargePercent = Math.random() * (6 - 4) + 4; // 4% to 6%
-    let charges = (amount * chargePercent / 100).toFixed(2);
+    if (amount < 100 || amount % 100 !== 0) {
+        alert("Amount must be minimum ₹100 and in multiples of ₹100");
+        e.preventDefault();
+        return;
+    }
+    let charges = (amount * 10 / 100).toFixed(2);
     let finalAmount = (amount - charges).toFixed(2);
-
     document.getElementById('charges').value = charges;
     document.getElementById('final').value = finalAmount;
 });
@@ -254,8 +258,7 @@ document.getElementById('withdrawForm').addEventListener('submit', function(e) {
 <?php
         } else {
             echo "<p style='color:red; font-weight:bold; text-align:center;'>
-        Withdrawals are open only on <strong>Monday</strong> and <strong>Friday</strong><br>
-        <span style='color:#fff;'>⏰ 10 AM – 2 PM and 4 PM – 10 PM (IST)</span>
+        Withdrawals are open <strong>Everyday 8 AM to 10 PM (IST)</strong>
       </p>";
 
         }

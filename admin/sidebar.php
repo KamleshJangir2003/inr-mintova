@@ -96,6 +96,14 @@
 </ul>
 </li>
 
+<!-- Prize Pool -->
+<li class="slide">
+<a class="side-menu__item" href="prize-pool">
+<i class="side-menu__icon fe fe-award"></i>
+<span class="side-menu__label">Prize Pool</span>
+</a>
+</li>
+
 <!-- Announcement -->
 <li class="slide <?php if($left=='13'){?> is-expanded <?php }?>">
 <a class="side-menu__item" data-bs-toggle="slide" href="javascript:void(0);">

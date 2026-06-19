@@ -2,7 +2,7 @@
 declare(strict_types=1);
 
 /*-----------------Database Connection-----------------------*/
-$conn = mysqli_connect('localhost', 'u937873453_new', 'u937873453_New', 'u937873453_new');
+$conn = mysqli_connect('localhost', 'root', '', 'inrclone');
 
 if (!$conn) {
     die("Connection failed: " . mysqli_connect_error());
@@ -1411,8 +1411,128 @@ $num=numrows($res);
 if($num>0)
 {
 $fetch=fetcharray($res);
-
 return $fetch['percentage'];
 }
+}
+
+// =============================================
+// Single Leg Plan Functions
+// =============================================
+
+// Get total team size (all downlines) for a user
+function getSLTeamCount($conn, $userid) {
+    $sql = "SELECT COUNT(*) as total FROM imaksoft_member WHERE sponsor='" . mysqli_real_escape_string($conn, $userid) . "' AND paystatus='A'";
+    $res = query($conn, $sql);
+    $fetch = fetcharray($res);
+    $direct = (int)($fetch['total'] ?? 0);
+
+    // Recursive count for all downlines
+    $sql2 = "SELECT userid FROM imaksoft_member WHERE sponsor='" . mysqli_real_escape_string($conn, $userid) . "' AND paystatus='A'";
+    $res2 = query($conn, $sql2);
+    $total = $direct;
+    while ($row = mysqli_fetch_assoc($res2)) {
+        $total += getSLTeamCount($conn, $row['userid']);
+    }
+    return $total;
+}
+
+// Get direct active count
+function getSLDirectCount($conn, $userid) {
+    $sql = "SELECT COUNT(*) as total FROM imaksoft_member WHERE sponsor='" . mysqli_real_escape_string($conn, $userid) . "' AND paystatus='A'";
+    $res = query($conn, $sql);
+    $fetch = fetcharray($res);
+    return (int)($fetch['total'] ?? 0);
+}
+
+// Get total SL daily income earned
+function getSLDailyIncome($conn, $userid) {
+    $sql = "SELECT SUM(amount) as total FROM sl_daily_income WHERE userid='" . mysqli_real_escape_string($conn, $userid) . "'";
+    $res = query($conn, $sql);
+    $fetch = fetcharray($res);
+    $total = $fetch['total'] ?? 0;
+    return $total > 0 ? $total : number_format(0, 2);
+}
+
+// Get total prize pool income
+function getSLPrizePoolIncome($conn, $userid) {
+    $sql = "SELECT SUM(amount) as total FROM sl_prize_pool_log WHERE userid='" . mysqli_real_escape_string($conn, $userid) . "'";
+    $res = query($conn, $sql);
+    $fetch = fetcharray($res);
+    $total = $fetch['total'] ?? 0;
+    return $total > 0 ? $total : number_format(0, 2);
+}
+
+// Get total reward income
+function getSLRewardIncome($conn, $userid) {
+    $sql = "SELECT SUM(amount) as total FROM sl_rewards WHERE userid='" . mysqli_real_escape_string($conn, $userid) . "'";
+    $res = query($conn, $sql);
+    $fetch = fetcharray($res);
+    $total = $fetch['total'] ?? 0;
+    return $total > 0 ? $total : number_format(0, 2);
+}
+
+// Check and award milestones for a user
+function checkAndAwardSLMilestones($conn, $userid) {
+    $teamCount = getSLTeamCount($conn, $userid);
+    $directCount = getSLDirectCount($conn, $userid);
+
+    $milestones = query($conn, "SELECT * FROM sl_milestones ORDER BY id ASC");
+    while ($m = mysqli_fetch_assoc($milestones)) {
+        if ($teamCount >= $m['team_size'] && $directCount >= $m['required_direct']) {
+            // Check if already awarded
+            $check = query($conn, "SELECT id FROM sl_milestone_earned WHERE userid='" . mysqli_real_escape_string($conn, $userid) . "' AND milestone_id='" . $m['id'] . "'");
+            if (mysqli_num_rows($check) == 0) {
+                $dailyAmt = round($m['income'] / $m['days'], 2);
+                $conn->query("INSERT INTO sl_milestone_earned (userid, milestone_id, total_income, daily_amount, days_total, days_paid, earned_date, status) VALUES ('" . mysqli_real_escape_string($conn, $userid) . "', '" . $m['id'] . "', '" . $m['income'] . "', '" . $dailyAmt . "', '" . $m['days'] . "', 0, '" . date('Y-m-d') . "', 'A')");
+            }
+        }
+    }
+}
+
+// Check and award rewards (10/20/30 directs within time)
+function checkAndAwardSLRewards($conn, $userid) {
+    $rewards = [
+        1 => ['directs' => 10, 'days' => 3,  'amount' => 150],
+        2 => ['directs' => 20, 'days' => 5,  'amount' => 300],
+        3 => ['directs' => 30, 'days' => 7,  'amount' => 600],
+    ];
+
+    $joinDate = getMemberFromUserid($conn, $userid, 'date');
+    if (!$joinDate) return;
+    $daysSinceJoin = (int)floor((time() - strtotime($joinDate)) / 86400);
+    $directCount = getSLDirectCount($conn, $userid);
+
+    foreach ($rewards as $level => $r) {
+        if ($directCount >= $r['directs'] && $daysSinceJoin <= $r['days']) {
+            $check = query($conn, "SELECT id FROM sl_rewards WHERE userid='" . mysqli_real_escape_string($conn, $userid) . "' AND reward_level='" . $level . "'");
+            if (mysqli_num_rows($check) == 0) {
+                $conn->query("INSERT INTO sl_rewards (userid, reward_level, amount, date) VALUES ('" . mysqli_real_escape_string($conn, $userid) . "', '" . $level . "', '" . $r['amount'] . "', '" . date('Y-m-d') . "')");
+            }
+        }
+    }
+}
+
+function getMemberFromUserid($conn, $userid, $field) {
+    $sql = "SELECT * FROM imaksoft_member WHERE userid='" . mysqli_real_escape_string($conn, $userid) . "'";
+    $res = query($conn, $sql);
+    if (numrows($res) > 0) {
+        $fetch = fetcharray($res);
+        return $fetch[$field];
+    }
+    return null;
+}
+
+// Get current week prize pool total
+function getSLCurrentPrizePool($conn) {
+    // ₹100 from every active paid member
+    $sql = "SELECT COUNT(*) as total FROM imaksoft_member WHERE paystatus='A'";
+    $res = query($conn, $sql);
+    $fetch = fetcharray($res);
+    return (int)($fetch['total'] ?? 0) * 100;
+}
+
+// Get total SL income (daily + prize + reward)
+function getSLTotalIncome($conn, $userid) {
+    return getSLDailyIncome($conn, $userid) + getSLPrizePoolIncome($conn, $userid) + getSLRewardIncome($conn, $userid);
 }
 ?>

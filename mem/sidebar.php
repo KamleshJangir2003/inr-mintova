@@ -268,23 +268,18 @@ $onoff = $q->fetch_assoc();
                 <li class="nav-item">
                   <a class="nav-link" href="income?inc=direct">
                     <i class="icon">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        stroke-width="1.5"
-                        width="16"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                      >
-                        <circle
-                          cx="12"
-                          cy="12"
-                          r="7.5"
-                          stroke="currentColor"
-                        ></circle>
-                      </svg>
+                      <svg xmlns="http://www.w3.org/2000/svg" stroke-width="1.5" width="16" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="7.5" stroke="currentColor"></circle></svg>
                     </i>
-                    <i class="sidenav-mini-icon"> D </i>
                     <span class="item-name">Direct Income</span>
+                  </a>
+                </li>
+                
+                <li class="nav-item">
+                  <a class="nav-link" href="single-leg">
+                    <i class="icon">
+                      <svg xmlns="http://www.w3.org/2000/svg" stroke-width="1.5" width="16" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="7.5" stroke="currentColor"></circle></svg>
+                    </i>
+                    <span class="item-name">Single Leg Income</span>
                   </a>
                 </li>
                 
