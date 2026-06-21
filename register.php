@@ -163,7 +163,7 @@ select {
     <!-- Sponsor ID -->
     <div class="col-span-2">
       <label for="sponsor">Sponsor ID*</label>
-      <input type="text" name="sponsor" id="sponsor" placeholder="Sponsor ID" value="<?=$_REQUEST['spon'] ?? ''?>" required readonly>
+      <input type="text" name="sponsor" id="sponsor" placeholder="Sponsor ID" value="<?=htmlspecialchars($_REQUEST['reg'] ?? $_REQUEST['spon'] ?? '')?>" required readonly>
     </div>
 
     <!-- Name -->
@@ -417,6 +417,12 @@ select {
     <div class="col-span-2">
       <label for="email">Enter Email*</label>
       <input type="text" name="email" id="email" placeholder="Enter Email" required>
+    </div>
+
+    <!-- Address -->
+    <div class="col-span-2">
+      <label for="address">Enter Address*</label>
+      <input type="text" name="address" id="address" placeholder="Enter Address" required>
     </div>
 
     <!-- Submit Button -->

@@ -77,7 +77,7 @@ include('admin/inc/function.php');
       <h4 class="font-bold mb-2 text-orange-300">Our Mission</h4>
       <p class="text-gray-300 text-sm">
         To provide a transparent, scalable, and accessible crypto-earning platform that helps
-        individuals achieve financial freedom with micro entry plans starting from just $10.
+        individuals achieve financial freedom with micro entry plans starting from just INR 10.
       </p>
     </div>
     <div class="p-6 bg-white/5 border border-white/10 rounded-xl">
@@ -101,7 +101,7 @@ include('admin/inc/function.php');
     <p class="text-gray-300 text-sm leading-relaxed">
       Whether you are a crypto beginner or an experienced builder, Mintova gives you the perfect
       environment to grow your income daily. With low entry, strong network rewards, automated
-      ROI, and high-speed USDT transactions — Mintova is designed for the modern digital earner.
+      ROI, and high-speed INR transactions — Mintova is designed for the modern digital earner.
     </p>
   </div>
 </section>

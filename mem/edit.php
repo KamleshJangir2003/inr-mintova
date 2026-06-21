@@ -190,15 +190,15 @@ $left=2;
 
 <div class="col-md-6">
   <div class="form-group form-group-default">
-    <label>USDT BEP20 Wallet Address</label>
+    <label>INR Wallet Address</label>
     <input type="text" class="form-control border-danger" name="bitcoin" id="bitcoin" 
-      placeholder="Enter your USDT TRC20 Wallet Address"
+      placeholder="Enter your INR TRC20 Wallet Address"
       value="<?=getMember($conn,$_SESSION['mid'],'bitcoin')?>"
       <?php if(getMember($conn,$_SESSION['mid'],'bitcoin')){?>readonly<?php }?> />
 
     <small class="form-text" 
   style="background:#ffe5e5; color:#b30000; font-weight:600; display:block; padding:10px; border-radius:6px; margin-top:6px;">
-  ⚠️ Please enter your correct <b>USDT TRC20 wallet address</b>.<br>
+  ⚠️ Please enter your correct <b>INR TRC20 wallet address</b>.<br>
   Once submitted, it <u>cannot be edited or changed</u>.<br>
   Any incorrect entry may result in permanent loss of funds.<br>
   The company will not be responsible for funds lost due to an invalid or incorrect address.

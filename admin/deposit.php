@@ -108,7 +108,7 @@ $num = mysqli_num_rows($result);
                         <tr>
                             <td align="center"><?php echo $i++; ?></td>
                              <td align="center"><?php echo htmlspecialchars($fetch['userid']); ?></td>
-                              <td align="center">$ <?php echo htmlspecialchars($fetch['amount']); ?></td>
+                              <td align="center">&#8377; <?php echo htmlspecialchars($fetch['amount']); ?></td>
                                <td align="center"><?php echo htmlspecialchars($fetch['remarks']); ?></td>
                                 <td align="center"><?php echo htmlspecialchars($fetch['date']); ?></td>
                         </tr>

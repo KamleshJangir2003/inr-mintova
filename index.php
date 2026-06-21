@@ -98,9 +98,9 @@ include('menu.php');
       POWERED BY Mintova
     </span>
 
-    <h1 class="text-4xl md:text-6xl font-extrabold leading-tight mt-5">
+      <h1 class="text-4xl md:text-6xl font-extrabold leading-tight mt-5">
       Start Your Crypto Journey
-      <span class="text-orange-400">With Just $10</span>
+      <span class="text-orange-400">With Just INR 600</span>
     </h1>
 
     <p class="text-gray-300 text-lg max-w-xl mt-4">
@@ -141,7 +141,7 @@ include('menu.php');
   <div class="grid md:grid-cols-3 gap-6">
     <div class="p-6 bg-white/5 border border-white/10 rounded-xl">
       <h4 class="font-bold mb-2">Step 1 — Deposit & Activate</h4>
-      <p class="text-gray-300 text-sm">Start with just $10 using Tron TRC20 and instantly activate your staking plan.</p>
+      <p class="text-gray-300 text-sm">Start with just INR 10 using Tron TRC20 and instantly activate your staking plan.</p>
     </div>
     <div class="p-6 bg-white/5 border border-white/10 rounded-xl">
       <h4 class="font-bold mb-2">Step 2 — Earn Daily ROI</h4>
@@ -189,19 +189,19 @@ include('menu.php');
   <div class="grid md:grid-cols-3 gap-6">
     <div class="p-6 bg-white/5 border border-white/10 rounded-xl flex flex-col gap-3">
       <h3 class="font-bold text-lg">Basic</h3>
-      <div class="text-3xl font-extrabold text-orange-400">$10</div>
+      <div class="text-3xl font-extrabold text-orange-400">INR 10</div>
       <p class="text-gray-400 text-sm">Entry plan for beginners. Earn stable daily ROI + level income.</p>
       <a href="register" class="bg-orange-400 text-black font-bold px-4 py-2 rounded-full mt-auto text-center">Start Now</a>
     </div>
     <div class="p-6 bg-white/5 border border-white/10 rounded-xl flex flex-col gap-3">
       <h3 class="font-bold text-lg">Standard</h3>
-      <div class="text-3xl font-extrabold text-orange-400">$50</div>
+      <div class="text-3xl font-extrabold text-orange-400">INR 50</div>
       <p class="text-gray-400 text-sm">Higher ROI + bigger level rewards. Ideal for consistent daily earnings.</p>
       <a href="register" class="bg-orange-400 text-black font-bold px-4 py-2 rounded-full mt-auto text-center">Upgrade</a>
     </div>
     <div class="p-6 bg-white/5 border border-white/10 rounded-xl flex flex-col gap-3">
       <h3 class="font-bold text-lg">Premium</h3>
-      <div class="text-3xl font-extrabold text-orange-400">$100+</div>
+      <div class="text-3xl font-extrabold text-orange-400">INR 100+</div>
       <p class="text-gray-400 text-sm">Max ROI, max level rewards, and access to premium task bonuses.</p>
       <a href="register" class="bg-orange-400 text-black font-bold px-4 py-2 rounded-full mt-auto text-center">Go Premium</a>
     </div>
@@ -246,7 +246,7 @@ include('menu.php');
   <h2 class="text-2xl font-bold mb-6">About Mintova</h2>
   <div class="p-6 bg-white/5 border border-white/10 rounded-xl leading-relaxed text-gray-300 text-sm">
     <p>Mintova is a next-generation crypto earning platform built to make digital income simple, accessible, and transparent for everyone. Our ecosystem allows users to grow their wealth through automated staking, daily ROI, referral rewards, and structured team bonuses.</p>
-    <p class="mt-4">Powered by Tron TRC20 technology, Mintova delivers fast transactions, real-time wallet tracking, and a smooth user experience. Whether you're a beginner starting with $10 or a leader building a global network, Mintova gives you the tools to earn smarter and scale faster.</p>
+    <p class="mt-4">Powered by Tron TRC20 technology, Mintova delivers fast transactions, real-time wallet tracking, and a smooth user experience. Whether you're a beginner starting with INR 10 or a leader building a global network, Mintova gives you the tools to earn smarter and scale faster.</p>
     <p class="mt-4">Our mission is simple: create a secure, reward-driven earning model where anyone can participate, grow, and achieve financial freedom through crypto.</p>
   </div>
 </section>
@@ -258,7 +258,7 @@ include('menu.php');
   <div class="space-y-4">
     <div class="p-5 bg-white/5 border border-white/10 rounded-xl">
       <h4 class="font-bold mb-2">How do I start earning?</h4>
-      <p class="text-gray-300 text-sm">Create your account, deposit Tron (TRC20) and activate any staking plan starting from just $10.</p>
+      <p class="text-gray-300 text-sm">Create your account, deposit Tron (TRC20) and activate any staking plan starting from just INR 10.</p>
     </div>
     <div class="p-5 bg-white/5 border border-white/10 rounded-xl">
       <h4 class="font-bold mb-2">When will I get my daily ROI?</h4>
@@ -278,7 +278,7 @@ include('menu.php');
     </div>
     <div class="p-5 bg-white/5 border border-white/10 rounded-xl">
       <h4 class="font-bold mb-2">Is Mintova beginner-friendly?</h4>
-      <p class="text-gray-300 text-sm">Yes — even new users can start earning with just $10. The dashboard is simple, automated, and easy to track.</p>
+      <p class="text-gray-300 text-sm">Yes — even new users can start earning with just INR 10. The dashboard is simple, automated, and easy to track.</p>
     </div>
   </div>
 </section>

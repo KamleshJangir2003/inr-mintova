@@ -65,242 +65,7 @@ $num = mysqli_num_rows($result);
                     <th>Transaction_Password</th>
                     <th>Email</th>
                     <th>Phone</th>
-                    <th>USDT_TRC20_Wallet</th>
-                    <th>Account_Status</th>
-                    <th>Pay_Status</th>
-                    <th>Date</th>
-                    <th>Action</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php if ($num > 0): $i = 1; ?>
-                    <?php while ($fetch = mysqli_fetch_assoc($result)): ?>
-                        <tr>
-                            <td align="center"><?php echo $i++; ?></td>
-                            <td align="center"><?php echo htmlspecialchars($fetch['userid']); ?></td>
-                            <td align="center">
-                                <a href="../mem/admin-login-process?userid=<?php echo urlencode($fetch['userid']); ?>&password=<?php echo urlencode(base64_decode($fetch['password'])); ?>&ch=sc" target="_blank">
-                                    <strong style="color:#ffeb07;">Login</strong>
-                                </a>
-                            </td>
-                            <td align="center"><?php echo !empty($fetch['sponsor']) ? htmlspecialchars($fetch['sponsor']) : '---'; ?></td>
-                            <td align="center"><?php echo ucfirst(htmlspecialchars($fetch['name'])); ?></td>
-                            <td align="center"><?php echo htmlspecialchars(base64_decode($fetch['password'])); ?></td>
-                            <td align="center"><?php echo ucfirst(htmlspecialchars($fetch['tpassword'])); ?></td>
-                            <td align="center"><?php echo htmlspecialchars($fetch['email']); ?></td>
-                            <td align="center"><?php echo htmlspecialchars($fetch['phone']); ?></td>
-                            <td align="center"><?php echo htmlspecialchars($fetch['bitcoin']); ?></td>
-                            <td align="center">
-                                <a href="member-process?case=status&id=<?php echo $fetch['id']; ?>&st=<?php echo $fetch['status']; ?>" onclick="return confirm('Change status?');">
-                                    <span style="color:<?php echo ($fetch['status'] == 'I') ? '#CC0000' : '#00CC00'; ?>;">
-                                        <?php echo ($fetch['status'] == 'I') ? 'Unblock' : 'Block'; ?>
-                                    </span>
-                                </a>
-                            </td>
-                            <td align="center" style="padding:5px; color:<?php echo ($fetch['paystatus'] == 'A') ? '#00CC00' : '#FF0000'; ?>;">
-                                <?php echo ($fetch['paystatus'] == 'A') ? 'Paid' : 'Pending'; ?>
-                            </td>
-                            <td align="center"><?php echo htmlspecialchars($fetch['date']); ?></td>
-                            <td align="center">
-                                <!--<a href="member?inc=view&id=<?php echo $fetch['id']; ?>">-->
-                                <!--    <img src="images/eye.png" title="View Details" height="18">-->
-                                <!--</a>-->
-                                <a href="member?inc=edit&id=<?php echo $fetch['id']; ?>">
-                                    <img src="images/edit.png" title="Edit">
-                                </a>
-                                <!--<a href="member-process?case=delete&id=<?php echo $fetch['id']; ?>" onclick="return confirm('Are you sure want to delete this?')">-->
-                                <!--    <img src="images/delete.png" title="Delete">-->
-                                <!--</a>-->
-                            </td>
-                        </tr>
-                    <?php endwhile; ?>
-                <?php else: ?>
-                    <tr>
-                        <td colspan="10" align="center" style="color:#FF0000;">No Record Found!</td>
-                    </tr>
-                <?php endif; ?>
-            </tbody>
-        </table>
-</div>
-</div>
-</div>
-</div>
-</div>
-
-<?php }else if($_REQUEST['inc']=='pen'){?>
-
-
-
-<div class="main-panel">
-<div class="content">
-<div class="page-inner">
-
-<div class="row">
-<div class="col-xs-12">
-<div class="card">
-<div class="card-header">
-    <h4 class="card-title">Member Details</h4>
-<a href="member-export" class="btn btn-success mt-3">Download Excel</a>
-<form action="member?inc=memdet&act=search" method="post" class="mt-3">
-        <div class="input-group">
-            <input type="text" name="search" class="form-control" placeholder="Search by User ID, Name or Phone" required>
-            <button class="btn btn-primary" type="submit">Search</button>
-        </div>
-    </form>
-</div>
-
-
-<div>&nbsp;</div>
-<div class="table-responsive">
-<?php
-
-$tname = 'imaksoft_member';
-$lim = 10000;
-$tpage = 'member.php';
-$where = "WHERE paystatus='I' ORDER BY id DESC";  // default: only P
-
-if (isset($_GET['act']) && $_GET['act'] === 'search' && !empty($_POST['search'])) {
-    $search = mysqli_real_escape_string($conn, trim($_POST['search']));
-    $where = "WHERE paystatus='I' AND (userid LIKE '%$search%' OR name LIKE '%$search%' OR phone LIKE '%$search%') ORDER BY id DESC";
-}
-
-$query = "SELECT * FROM $tname $where LIMIT $lim";
-$result = mysqli_query($conn, $query);
-$num = mysqli_num_rows($result);
-
-?>
-<table class="table table-bordered table-striped">
-            <thead>
-                <tr align="Center">
-                    <th>Sl_No</th>
-                    <th>User ID</th>
-                    <th>Direct_Login</th>
-                    <th>Sponsor</th>
-                    <th>Name</th>
-                    <th>Password</th>
-                    <th>Transaction_Password</th>
-                    <th>Email</th>
-                    <th>Phone</th>
-                    <th>USDT_TRC20_Wallet</th>
-                    <th>Account_Status</th>
-                    <th>Pay_Status</th>
-                    <th>Date</th>
-                    <th>Action</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php if ($num > 0): $i = 1; ?>
-                    <?php while ($fetch = mysqli_fetch_assoc($result)): ?>
-                        <tr>
-                            <td align="center"><?php echo $i++; ?></td>
-                            <td align="center"><?php echo htmlspecialchars($fetch['userid']); ?></td>
-                            <td align="center">
-                                <a href="../mem/admin-login-process?userid=<?php echo urlencode($fetch['userid']); ?>&password=<?php echo urlencode(base64_decode($fetch['password'])); ?>&ch=sc" target="_blank">
-                                    <strong style="color:#ffeb07;">Login</strong>
-                                </a>
-                            </td>
-                            <td align="center"><?php echo !empty($fetch['sponsor']) ? htmlspecialchars($fetch['sponsor']) : '---'; ?></td>
-                            <td align="center"><?php echo ucfirst(htmlspecialchars($fetch['name'])); ?></td>
-                            <td align="center"><?php echo htmlspecialchars(base64_decode($fetch['password'])); ?></td>
-                            <td align="center"><?php echo ucfirst(htmlspecialchars($fetch['tpassword'])); ?></td>
-                            <td align="center"><?php echo htmlspecialchars($fetch['email']); ?></td>
-                            <td align="center"><?php echo htmlspecialchars($fetch['phone']); ?></td>
-                            <td align="center"><?php echo htmlspecialchars($fetch['bitcoin']); ?></td>
-                            <td align="center">
-                                <a href="member-process?case=status&id=<?php echo $fetch['id']; ?>&st=<?php echo $fetch['status']; ?>" onclick="return confirm('Change status?');">
-                                    <span style="color:<?php echo ($fetch['status'] == 'I') ? '#CC0000' : '#00CC00'; ?>;">
-                                        <?php echo ($fetch['status'] == 'I') ? 'Unblock' : 'Block'; ?>
-                                    </span>
-                                </a>
-                            </td>
-                            <td align="center" style="padding:5px; color:<?php echo ($fetch['paystatus'] == 'A') ? '#00CC00' : '#FF0000'; ?>;">
-                                <?php echo ($fetch['paystatus'] == 'A') ? 'Paid' : 'Pending'; ?>
-                            </td>
-                            <td align="center"><?php echo htmlspecialchars($fetch['date']); ?></td>
-                            <td align="center">
-                                <!--<a href="member?inc=view&id=<?php echo $fetch['id']; ?>">-->
-                                <!--    <img src="images/eye.png" title="View Details" height="18">-->
-                                <!--</a>-->
-                                <a href="member?inc=edit&id=<?php echo $fetch['id']; ?>">
-                                    <img src="images/edit.png" title="Edit">
-                                </a>
-                                <!--<a href="member-process?case=delete&id=<?php echo $fetch['id']; ?>" onclick="return confirm('Are you sure want to delete this?')">-->
-                                <!--    <img src="images/delete.png" title="Delete">-->
-                                <!--</a>-->
-                            </td>
-                        </tr>
-                    <?php endwhile; ?>
-                <?php else: ?>
-                    <tr>
-                        <td colspan="10" align="center" style="color:#FF0000;">No Record Found!</td>
-                    </tr>
-                <?php endif; ?>
-            </tbody>
-        </table>
-</div>
-</div>
-</div>
-</div>
-</div>
-
-
-<?php }else if($_REQUEST['inc']=='act'){?>
-
-
-
-<div class="main-panel">
-<div class="content">
-<div class="page-inner">
-
-<div class="row">
-<div class="col-xs-12">
-<div class="card">
-<div class="card-header">
-    <h4 class="card-title">Member Details</h4>
-<a href="member-export" class="btn btn-success mt-3">Download Excel</a>
-
-<form action="member?inc=memdet&act=search" method="post" class="mt-3">
-        <div class="input-group">
-            <input type="text" name="search" class="form-control" placeholder="Search by User ID, Name or Phone" required>
-            <button class="btn btn-primary" type="submit">Search</button>
-        </div>
-    </form>
-</div>
-
-
-<div>&nbsp;</div>
-<div class="table-responsive">
-<?php
-
-$tname = 'imaksoft_member';
-$lim = 10000;
-$tpage = 'member.php';
-$where = "WHERE paystatus='A' ORDER BY id DESC";  // default: only P
-
-if (isset($_GET['act']) && $_GET['act'] === 'search' && !empty($_POST['search'])) {
-    $search = mysqli_real_escape_string($conn, trim($_POST['search']));
-    $where = "WHERE paystatus='A' AND (userid LIKE '%$search%' OR name LIKE '%$search%' OR phone LIKE '%$search%') ORDER BY id DESC";
-}
-
-$query = "SELECT * FROM $tname $where LIMIT $lim";
-$result = mysqli_query($conn, $query);
-$num = mysqli_num_rows($result);
-
-?>
-<table class="table table-bordered table-striped">
-            <thead>
-                <tr align="Center">
-                    <th>Sl_No</th>
-                    <th>User ID</th>
-                    <th>Direct_Login</th>
-                    <th>Sponsor</th>
-                    <th>Name</th>
-                    <th>Password</th>
-                    <th>Transaction_Password</th>
-                    <th>Email</th>
-                    <th>Phone</th>
-                    <th>USDT_TRC20_Wallet</th>
-                    <th>Account_Status</th>
+                    <th>INR_TRC20_Wallet</th>
                     <th>Pay_Status</th>
                     <th>Date</th>
                     <th>Action</th>
@@ -561,8 +326,8 @@ $fetch=fetcharray($res);
 
 
 <div class="form-group">
-<label for="userinput5">USDT TRC20 Wallet Address<span style="color:#CC0000;">*</span></label>
-<input class="form-control border-primary" type="text" placeholder="Enter USDT TRC20 Wallet Address" required id="bitcoin" name="bitcoin" value="<?=$fetch['bitcoin']?>" />
+<label for="userinput5">INR TRC20 Wallet Address<span style="color:#CC0000;">*</span></label>
+<input class="form-control border-primary" type="text" placeholder="Enter INR TRC20 Wallet Address" required id="bitcoin" name="bitcoin" value="<?=$fetch['bitcoin']?>" />
 </div>
 
 
@@ -736,6 +501,146 @@ while($fetch=fetcharray($result))
 </div>
 </div>
 
+
+<?php }else if($_REQUEST['inc']=='pen'){?>
+<div class="main-panel">
+<div class="content">
+<div class="page-inner">
+<div class="row">
+<div class="col-xs-12">
+<div class="card">
+<div class="card-header">
+    <h4 class="card-title">Inactive / Pending Members</h4>
+    <form action="member?inc=pen&act=search" method="post" class="mt-3">
+        <div class="input-group">
+            <input type="text" name="search" class="form-control" placeholder="Search by User ID, Name or Phone">
+            <button class="btn btn-primary" type="submit">Search</button>
+        </div>
+    </form>
+</div>
+<div class="table-responsive">
+<?php
+$where = "WHERE `paystatus`='I'";
+if (isset($_GET['act']) && $_GET['act'] === 'search' && !empty($_POST['search'])) {
+    $search = mysqli_real_escape_string($conn, trim($_POST['search']));
+    $where = "WHERE `paystatus`='I' AND (`userid` LIKE '%$search%' OR `name` LIKE '%$search%' OR `phone` LIKE '%$search%')";
+}
+$result = mysqli_query($conn, "SELECT * FROM `imaksoft_member` $where ORDER BY `id` DESC");
+$num = mysqli_num_rows($result);
+?>
+<table class="table table-bordered table-striped">
+<thead>
+<tr align="center">
+    <th>Sl_No</th>
+    <th>User ID</th>
+    <th>Sponsor</th>
+    <th>Name</th>
+    <th>Phone</th>
+    <th>Email</th>
+    <th>TRC20 Wallet</th>
+    <th>Date</th>
+    <th>Action</th>
+</tr>
+</thead>
+<tbody>
+<?php if ($num > 0): $i = 1; ?>
+    <?php while ($fetch = mysqli_fetch_assoc($result)): ?>
+    <tr>
+        <td align="center"><?=$i++?></td>
+        <td align="center"><?=htmlspecialchars($fetch['userid'])?></td>
+        <td align="center"><?=!empty($fetch['sponsor']) ? htmlspecialchars($fetch['sponsor']) : '---'?></td>
+        <td align="center"><?=ucfirst(htmlspecialchars($fetch['name']))?></td>
+        <td align="center"><?=htmlspecialchars($fetch['phone'])?></td>
+        <td align="center"><?=htmlspecialchars($fetch['email'])?></td>
+        <td align="center"><?=htmlspecialchars($fetch['bitcoin'])?></td>
+        <td align="center"><?=htmlspecialchars($fetch['date'])?></td>
+        <td align="center">
+            <a href="member-process?case=activate&id=<?=$fetch['id']?>&redirect=pen" onclick="return confirm('Activate this member?');" style="color:#00CC00;"><strong>Activate</strong></a>
+            &nbsp;|
+            <a href="member?inc=edit&id=<?=$fetch['id']?>">
+                <img src="images/edit.png" title="Edit" height="16">
+            </a>
+        </td>
+    </tr>
+    <?php endwhile; ?>
+<?php else: ?>
+    <tr><td colspan="9" align="center" style="color:#FF0000;">No Inactive Members Found!</td></tr>
+<?php endif; ?>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<?php }else if($_REQUEST['inc']=='act'){?>
+<div class="main-panel">
+<div class="content">
+<div class="page-inner">
+<div class="row">
+<div class="col-xs-12">
+<div class="card">
+<div class="card-header">
+    <h4 class="card-title">Activation Pending Members</h4>
+    <form action="member?inc=act&act=search" method="post" class="mt-3">
+        <div class="input-group">
+            <input type="text" name="search" class="form-control" placeholder="Search by User ID, Name or Phone">
+            <button class="btn btn-primary" type="submit">Search</button>
+        </div>
+    </form>
+</div>
+<div class="table-responsive">
+<?php
+$where = "WHERE `paystatus`='I'";
+if (isset($_GET['act']) && $_GET['act'] === 'search' && !empty($_POST['search'])) {
+    $search = mysqli_real_escape_string($conn, trim($_POST['search']));
+    $where = "WHERE `paystatus`='I' AND (`userid` LIKE '%$search%' OR `name` LIKE '%$search%' OR `phone` LIKE '%$search%')";
+}
+$result = mysqli_query($conn, "SELECT * FROM `imaksoft_member` $where ORDER BY `id` DESC");
+$num = mysqli_num_rows($result);
+?>
+<table class="table table-bordered table-striped">
+<thead>
+<tr align="center">
+    <th>Sl_No</th>
+    <th>User ID</th>
+    <th>Sponsor</th>
+    <th>Name</th>
+    <th>Phone</th>
+    <th>Email</th>
+    <th>Date</th>
+    <th>Action</th>
+</tr>
+</thead>
+<tbody>
+<?php if ($num > 0): $i = 1; ?>
+    <?php while ($fetch = mysqli_fetch_assoc($result)): ?>
+    <tr>
+        <td align="center"><?=$i++?></td>
+        <td align="center"><?=htmlspecialchars($fetch['userid'])?></td>
+        <td align="center"><?=!empty($fetch['sponsor']) ? htmlspecialchars($fetch['sponsor']) : '---'?></td>
+        <td align="center"><?=ucfirst(htmlspecialchars($fetch['name']))?></td>
+        <td align="center"><?=htmlspecialchars($fetch['phone'])?></td>
+        <td align="center"><?=htmlspecialchars($fetch['email'])?></td>
+        <td align="center"><?=htmlspecialchars($fetch['date'])?></td>
+        <td align="center">
+            <a href="member-process?case=activate&id=<?=$fetch['id']?>" onclick="return confirm('Activate this member?');" style="color:#00CC00;"><strong>Activate</strong></a>
+        </td>
+    </tr>
+    <?php endwhile; ?>
+<?php else: ?>
+    <tr><td colspan="8" align="center" style="color:#FF0000;">No Pending Members Found!</td></tr>
+<?php endif; ?>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
 
 <?php }else if($_REQUEST['inc']=='invd'){?>
 <div class="main-panel">

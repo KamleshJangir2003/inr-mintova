@@ -40,6 +40,7 @@
 <a href="index" class="opacity-70 cursor-default">Home</a>
 <a href="about" class="opacity-70 cursor-default">About</a>
 <a href="mission" class="opacity-70 cursor-default">Mission</a>
+    <a href="single_leg_plan" class="opacity-70 cursor-default">Single Leg Plan</a>
 <a href="vision" class="opacity-70 cursor-default">Vision</a>
 <a href="plan.pdf" class="opacity-70 cursor-default">Business Plan</a>
 
@@ -102,6 +103,7 @@
     <a href="index" class="opacity-70 cursor-pointer hover:opacity-100 transition">Home</a>
     <a href="about" class="opacity-70 cursor-pointer hover:opacity-100 transition">About</a>
     <a href="mission" class="opacity-70 cursor-pointer hover:opacity-100 transition">Mission</a>
+  <a href="single_leg_plan" class="opacity-70 cursor-pointer hover:opacity-100 transition">Single Leg Plan</a>
     <a href="vision" class="opacity-70 cursor-pointer hover:opacity-100 transition">Vision</a>
     <a href="plan.pdf" class="opacity-70 cursor-pointer hover:opacity-100 transition">Business Plan</a>
 </div>

@@ -1027,9 +1027,9 @@ $qr_row = fetcharray(query($conn, "SELECT * FROM imaksoft_settings_qr LIMIT 1"))
 ?>
 <form action="settings-qr-process" method="post" enctype="multipart/form-data">
 
-<h6 class="mt-2 mb-3" style="color:#17a2b8;">&#9654; USDT TRC20</h6>
+<h6 class="mt-2 mb-3" style="color:#17a2b8;">&#9654; INR TRC20</h6>
 <div class="form-group">
-<label>Wallet Address (USDT TRC20)</label>
+<label>Wallet Address (INR TRC20)</label>
 <input type="text" name="wallet_address" class="form-control border-primary" value="<?=htmlspecialchars($qr_row['wallet_address'] ?? '')?>" required>
 </div>
 <div class="form-group">
@@ -1042,9 +1042,9 @@ $qr_row = fetcharray(query($conn, "SELECT * FROM imaksoft_settings_qr LIMIT 1"))
 </div>
 
 <hr>
-<h6 class="mt-3 mb-3" style="color:#ffc107;">&#9654; USDT BEP20 (BSC)</h6>
+<h6 class="mt-3 mb-3" style="color:#ffc107;">&#9654; INR BEP20 (BSC)</h6>
 <div class="form-group">
-<label>Wallet Address (USDT BEP20)</label>
+<label>Wallet Address (INR BEP20)</label>
 <input type="text" name="bep20_wallet_address" class="form-control border-warning" value="<?=htmlspecialchars($qr_row['bep20_wallet_address'] ?? '')?>">
 </div>
 <div class="form-group">

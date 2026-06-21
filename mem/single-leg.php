@@ -4,12 +4,13 @@ include('../admin/inc/function.php');
 if(!isset($_SESSION['mid'])) redirect('../index');
 $userid = getMember($conn, $_SESSION['mid'], 'userid');
 
-// Check and award milestones
-checkAndAwardSLMilestones($conn, $userid);
-checkAndAwardSLRewards($conn, $userid);
-
+// Get counts first (single queries)
 $teamCount   = getSLTeamCount($conn, $userid);
 $directCount = getSLDirectCount($conn, $userid);
+
+// Award milestones/rewards only if needed (check before heavy call)
+checkAndAwardSLMilestones($conn, $userid);
+checkAndAwardSLRewards($conn, $userid);
 ?>
 <!DOCTYPE html>
 <html lang="en" data-bs-theme="dark">
@@ -78,13 +79,13 @@ $directCount = getSLDirectCount($conn, $userid);
       </div>
       <div class="col-md-3 col-6 mb-3">
         <div class="stats-box text-center">
-          <h5 class="text-success">₹<?=number_format(getSLDailyIncome($conn,$userid),2)?></h5>
+          <h5 class="text-success">INR <?=number_format(getSLDailyIncome($conn,$userid),2)?></h5>
           <small class="text-muted">SL Daily Income</small>
         </div>
       </div>
       <div class="col-md-3 col-6 mb-3">
         <div class="stats-box text-center">
-          <h5 class="text-primary">₹<?=number_format(getSLTotalIncome($conn,$userid),2)?></h5>
+          <h5 class="text-primary">INR <?=number_format(getSLTotalIncome($conn,$userid),2)?></h5>
           <small class="text-muted">Total SL Income</small>
         </div>
       </div>
@@ -119,13 +120,13 @@ $directCount = getSLDirectCount($conn, $userid);
           <?php endif; ?>
         </div>
         <p class="mb-1 small text-muted">Team Required: <strong class="text-white"><?=number_format($m['team_size'])?></strong></p>
-        <p class="mb-1 small text-muted">Total Income: <strong class="text-success">₹<?=number_format($m['income'],2)?></strong></p>
+        <p class="mb-1 small text-muted">Total Income: <strong class="text-success">INR <?=number_format($m['income'],2)?></strong></p>
         <p class="mb-1 small text-muted">Direct Needed: <strong class="text-warning"><?=$m['required_direct']?></strong></p>
-        <p class="mb-2 small text-muted">Daily: <strong class="text-info">2% for 50 days</strong></p>
+        <p class="mb-2 small text-muted">Daily: <strong class="text-info">2% for 30 days</strong></p>
         
         <?php if($isActive && $earnedRow): ?>
         <p class="mb-1 small">Days Paid: <strong><?=$earnedRow['days_paid']?>/<?=$earnedRow['days_total']?></strong></p>
-        <p class="mb-2 small">Daily Amt: <strong class="text-warning">₹<?=number_format($earnedRow['daily_amount'],2)?></strong></p>
+        <p class="mb-2 small">Daily Amt: <strong class="text-warning">INR <?=number_format($earnedRow['daily_amount'],2)?></strong></p>
         <?php endif; ?>
 
         <div class="progress-bar-sl mb-1">
@@ -161,7 +162,7 @@ $directCount = getSLDirectCount($conn, $userid);
           <?php endif; ?>
         </div>
         <p class="mb-1 small text-muted">Get <strong><?=$r['directs']?></strong> Directs in <strong><?=$r['days']?></strong> days</p>
-        <p class="mb-0 small text-muted">Reward: <strong class="text-success">₹<?=number_format($r['amount'],2)?></strong></p>
+        <p class="mb-0 small text-muted">Reward: <strong class="text-success">INR <?=number_format($r['amount'],2)?></strong></p>
       </div>
     </div>
     <?php endforeach; ?>
@@ -173,8 +174,8 @@ $directCount = getSLDirectCount($conn, $userid);
       <div class="col-md-6 mb-3">
         <div class="stats-box">
           <h6 class="text-warning">This Week's Prize Pool</h6>
-          <h3 class="text-success">₹<?=number_format(getSLCurrentPrizePool($conn),2)?></h3>
-          <small class="text-muted">₹100 from every active member • Distributed every Saturday 11:59 PM</small>
+          <h3 class="text-success">INR <?=number_format(getSLCurrentPrizePool($conn),2)?></h3>
+          <small class="text-muted">INR 100 from every active member • Distributed every Saturday 11:59 PM</small>
           <hr>
           <p class="mb-1 small">To be Achiever: Get <strong class="text-warning">10+ Directs</strong> this week</p>
           <p class="mb-0 small">Your Directs this week: <strong class="text-info"><?=$directCount?></strong></p>
@@ -188,7 +189,7 @@ $directCount = getSLDirectCount($conn, $userid);
       <div class="col-md-6 mb-3">
         <div class="stats-box">
           <h6 class="text-warning">My Prize Pool Earnings</h6>
-          <h3 class="text-success">₹<?=number_format(getSLPrizePoolIncome($conn,$userid),2)?></h3>
+          <h3 class="text-success">INR <?=number_format(getSLPrizePoolIncome($conn,$userid),2)?></h3>
           <hr>
           <?php
           $poolLogs = $conn->query("SELECT p.week_end_date, l.amount FROM sl_prize_pool_log l JOIN sl_prize_pool p ON p.id=l.pool_id WHERE l.userid='".mysqli_real_escape_string($conn,$userid)."' ORDER BY l.id DESC LIMIT 5");
@@ -197,7 +198,7 @@ $directCount = getSLDirectCount($conn, $userid);
           ?>
           <div class="d-flex justify-content-between small mb-1">
             <span class="text-muted"><?=date('d M Y',strtotime($pl['week_end_date']))?></span>
-            <span class="text-success">+₹<?=number_format($pl['amount'],2)?></span>
+            <span class="text-success">+INR <?=number_format($pl['amount'],2)?></span>
           </div>
           <?php endwhile; else: ?>
           <p class="text-muted small">No prize pool earnings yet</p>
@@ -223,7 +224,7 @@ $directCount = getSLDirectCount($conn, $userid);
           <tr>
             <td><?=$i++?></td>
             <td>Level <?=$l['milestone_id']?> (<?=number_format($l['team_size'])?>  team)</td>
-            <td class="text-success">+₹<?=number_format($l['amount'],2)?></td>
+            <td class="text-success">+INR <?=number_format($l['amount'],2)?></td>
             <td><?=date('d M Y',strtotime($l['date']))?></td>
           </tr>
           <?php endwhile; else: ?>

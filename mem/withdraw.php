@@ -166,7 +166,7 @@ $left=2;
 <?php }?>
 <?php if(($_REQUEST['e'] ?? null)==8 || ($_REQUEST['e'] ?? null)==1){?>
     <div class="alert alert-danger text-center p-3 rounded ">
-        <strong>Minimum withdrawal ₹100 and must be in multiples of ₹100!</strong>
+        <strong>Minimum withdrawal INR 100 and must be in multiples of INR 100!</strong>
     </div>
 <?php }?>
 <?php if(($_REQUEST['e'] ?? null)==9){?>
@@ -183,7 +183,7 @@ $left=2;
 <?php }?>
 
 
-<h4 class="form-section text-center">Wallet Balance: <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:middle;margin-right:2px;"><polygon points="12 2 2 19 22 19"/><line x1="12" y1="2" x2="12" y2="19"/><line x1="2" y1="19" x2="12" y2="10"/><line x1="22" y1="19" x2="12" y2="10"/></svg> <?=getAvailableFundWallet($conn,getMember($conn,$_SESSION['mid'],'userid'))?> USDT</h4>
+<h4 class="form-section text-center">Wallet Balance: INR <?=getAvailableFundWallet($conn,getMember($conn,$_SESSION['mid'],'userid'))?></h4>
 <p>&nbsp;</p>
 
 <?php 
@@ -230,7 +230,7 @@ if($avabal >= $min){
     </div>
     <br>
     <div class="alert alert-info p-2 mt-2" style="font-size:13px;">
-        💡 Min: <strong>₹100</strong> | Multiples of ₹100 only | <strong>10% admin charge</strong> deducted
+        💡 Min: <strong>INR 100</strong> | Multiples of INR 100 only | <strong>10% admin charge</strong> deducted
     </div>
     <button type="submit" class="btn btn-success w-100">Send Now</button>
 </form>
@@ -244,7 +244,7 @@ document.getElementById('withdrawForm').addEventListener('submit', function(e) {
         return;
     }
     if (amount < 100 || amount % 100 !== 0) {
-        alert("Amount must be minimum ₹100 and in multiples of ₹100");
+        alert("Amount must be minimum INR 100 and in multiples of INR 100");
         e.preventDefault();
         return;
     }
@@ -357,9 +357,9 @@ if ($result->num_rows > 0) {
         $svg = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:middle;"><polygon points="12 2 2 19 22 19"/><line x1="12" y1="2" x2="12" y2="19"/><line x1="2" y1="19" x2="12" y2="10"/><line x1="22" y1="19" x2="12" y2="10"/></svg>';
         echo "<tr>
                 <td>{$i}</td>
-                <td>{$svg} {$row['request']}</td>
-                <td>{$svg} {$row['charge']}</td>
-                <td>{$svg} {$row['payout']}</td>
+                <td>INR {$row['request']}</td>
+                <td>INR {$row['charge']}</td>
+                <td>INR {$row['payout']}</td>
                 <td>{$row['type']}</td>
                 <td>{$status}</td>
                 <td>{$row['date']}</td>

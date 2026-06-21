@@ -28,7 +28,7 @@ echo "
 <th>Transaction Password</th>
 <th>Email</th>
 <th>Phone</th>
-<th>USDT TRC20</th>
+<th>INR TRC20</th>
 <th>Account Status</th>
 <th>Pay Status</th>
 <th>Date</th>

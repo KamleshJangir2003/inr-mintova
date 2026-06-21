@@ -17,7 +17,13 @@ $welcome = 'welcome@jerryglow.com';
 $support = 'support@jerryglow.com';
 $recovery = 'recovery@jerryglow.com';
 $prefix = 'MS';
-$currency = 'Rs.';
+$currency = 'INR';
+$TRX_RATE = 35; // 1 TRX = 35 INR
+
+function trxToInr($trx) {
+    global $TRX_RATE;
+    return round((float)$trx * $TRX_RATE, 2);
+}
 
 function redirect($url)
 {
@@ -1419,19 +1425,25 @@ return $fetch['percentage'];
 // Single Leg Plan Functions
 // =============================================
 
-// Get total team size (all downlines) for a user
+// Get total team size (all downlines) for a user - iterative to avoid memory exhaustion
 function getSLTeamCount($conn, $userid) {
-    $sql = "SELECT COUNT(*) as total FROM imaksoft_member WHERE sponsor='" . mysqli_real_escape_string($conn, $userid) . "' AND paystatus='A'";
-    $res = query($conn, $sql);
-    $fetch = fetcharray($res);
-    $direct = (int)($fetch['total'] ?? 0);
-
-    // Recursive count for all downlines
-    $sql2 = "SELECT userid FROM imaksoft_member WHERE sponsor='" . mysqli_real_escape_string($conn, $userid) . "' AND paystatus='A'";
-    $res2 = query($conn, $sql2);
-    $total = $direct;
-    while ($row = mysqli_fetch_assoc($res2)) {
-        $total += getSLTeamCount($conn, $row['userid']);
+    $total = 0;
+    $queue = [$userid];
+    $visited = [];
+    while (!empty($queue)) {
+        $batch = [];
+        foreach ($queue as $id) {
+            if (isset($visited[$id])) continue;
+            $visited[$id] = true;
+            $batch[] = "'" . mysqli_real_escape_string($conn, $id) . "'";
+        }
+        if (empty($batch)) break;
+        $res = query($conn, "SELECT userid FROM imaksoft_member WHERE sponsor IN (" . implode(',', $batch) . ") AND status='A'");
+        $queue = [];
+        while ($row = mysqli_fetch_assoc($res)) {
+            $queue[] = $row['userid'];
+            $total++;
+        }
     }
     return $total;
 }
@@ -1493,8 +1505,8 @@ function checkAndAwardSLMilestones($conn, $userid) {
 function checkAndAwardSLRewards($conn, $userid) {
     $rewards = [
         1 => ['directs' => 10, 'days' => 3,  'amount' => 150],
-        2 => ['directs' => 20, 'days' => 5,  'amount' => 300],
-        3 => ['directs' => 30, 'days' => 7,  'amount' => 600],
+        2 => ['directs' => 20, 'days' => 5,  'amount' => 450],
+        3 => ['directs' => 30, 'days' => 7,  'amount' => 1050],
     ];
 
     $joinDate = getMemberFromUserid($conn, $userid, 'date');

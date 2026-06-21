@@ -40,6 +40,14 @@ redirect('member?inc=memdet&page='.$_REQUEST['page']);
 
 
 
+if($_REQUEST['case']=='activate')
+{
+$sql="UPDATE `imaksoft_member` SET `paystatus`='A', `status`='A' WHERE `id`='".mysqli_real_escape_string($conn,$_REQUEST['id'])."'";
+query($conn,$sql);
+$back = isset($_REQUEST['redirect']) ? $_REQUEST['redirect'] : 'act';
+redirect('member?inc='.$back);
+}
+
 if($_REQUEST['case']=='delete')
 {
 $sql="DELETE FROM `imaksoft_member` WHERE `id`='".mysqli_real_escape_string($conn,$_REQUEST['id'])."'";

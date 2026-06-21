@@ -8,8 +8,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $sponsor = trim(mysqli_real_escape_string($conn, $_POST['sponsor']));
     $phone = trim(mysqli_real_escape_string($conn, $_POST['phone']));
     $email = trim(mysqli_real_escape_string($conn, $_POST['email']));
-    $pancard = trim(mysqli_real_escape_string($conn, $_POST['pancard']));
-    $aadharcard = trim(mysqli_real_escape_string($conn, $_POST['aadharcard']));
+    $pancard = trim(mysqli_real_escape_string($conn, $_POST['pancard'] ?? ''));
+    $aadharcard = trim(mysqli_real_escape_string($conn, $_POST['aadharcard'] ?? ''));
 
     // Check if sponsor exists
     $sql = "SELECT * FROM `imaksoft_member` WHERE `userid`='$sponsor'";
@@ -29,8 +29,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $userid = $prefix . rand(1111111, 9999999);
             $tpassword = rand(1111, 9999);
 
+            $plain_password = trim($_POST['password']);
             $sql = "INSERT INTO `imaksoft_member` (`userid`, `sponsor`, `password`, `tpassword`, `name`, `email`, `phone`, `address`, `bname`, `branch`, `accname`, `accno`, `ifscode`, `bitcoin`, `upi`, `pancard`, `aadharcard`, `status`, `paystatus`, `date`, `approved`, `datetime`) 
-                    VALUES ('$userid', '$sponsor', '" . base64_encode(trim($_POST['password'])) . "', '$tpassword', '" . trim($_POST['name']) . "', '$email', '$phone', '" . trim($_POST['address']) . "', '', '', '', '', '', '', '', '$pancard', '$aadharcard', 'A', 'I', '" . date('Y-m-d') . "', '', '" . date('Y-m-d H:i:s') . "')";
+                    VALUES ('$userid', '$sponsor', '" . base64_encode($plain_password) . "', '$tpassword', '" . trim($_POST['name']) . "', '$email', '$phone', '" . trim($_POST['address']) . "', '', '', '', '', '', '', '', '$pancard', '$aadharcard', 'A', 'I', '" . date('Y-m-d') . "', '', '" . date('Y-m-d H:i:s') . "')";
             
             $res = query($conn, $sql);
             $id = mysqli_insert_id($conn);

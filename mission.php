@@ -73,7 +73,7 @@ include('admin/inc/function.php');
   <div class="grid md:grid-cols-2 gap-6 mt-10">
     <div class="p-6 bg-white/5 border border-white/10 rounded-xl">
       <h4 class="font-bold mb-2 text-orange-300">1. Financial Accessibility</h4>
-      <p class="text-gray-300 text-sm">We built Mintova so anyone — even with just $10 — can start earning daily without needing trading knowledge or financial expertise.</p>
+      <p class="text-gray-300 text-sm">We built Mintova so anyone — even with just INR 10 — can start earning daily without needing trading knowledge or financial expertise.</p>
     </div>
     <div class="p-6 bg-white/5 border border-white/10 rounded-xl">
       <h4 class="font-bold mb-2 text-orange-300">2. Transparent Earning System</h4>

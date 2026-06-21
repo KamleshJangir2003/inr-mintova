@@ -411,7 +411,7 @@ $left=2;
                     <div class="bonus-badge">+20% BONUS</div>
                     <div class="package-header">
                         <div class="package-rank">BASIC</div>
-                        <div class="package-range">$10 to $199</div>
+                        <div class="package-range">&#8377;10 to &#8377;199</div>
                     </div>
                     <div class="package-body">
                         <div class="package-details">
@@ -441,7 +441,7 @@ $left=2;
                     <div class="bonus-badge">+20% BONUS</div>
                     <div class="package-header">
                         <div class="package-rank">BRONZE</div>
-                        <div class="package-range">$50 to $499</div>
+                        <div class="package-range">&#8377;50 to &#8377;499</div>
                     </div>
                     <div class="package-body">
                         <div class="package-details">
@@ -471,7 +471,7 @@ $left=2;
                     <div class="bonus-badge">+20% BONUS</div>
                     <div class="package-header">
                         <div class="package-rank">SILVER</div>
-                        <div class="package-range">$100 to $999</div>
+                        <div class="package-range">&#8377;100 to &#8377;999</div>
                     </div>
                     <div class="package-body">
                         <div class="package-details">
@@ -501,7 +501,7 @@ $left=2;
                     <div class="bonus-badge">+20% BONUS</div>
                     <div class="package-header">
                         <div class="package-rank">GOLD</div>
-                        <div class="package-range">$200 to $1499</div>
+                        <div class="package-range">&#8377;200 to &#8377;1499</div>
                     </div>
                     <div class="package-body">
                         <div class="package-details">
@@ -531,7 +531,7 @@ $left=2;
                     <div class="bonus-badge">+20% BONUS</div>
                     <div class="package-header">
                         <div class="package-rank">PLATINUM</div>
-                        <div class="package-range">$200 to $2499</div>
+                        <div class="package-range">&#8377;200 to &#8377;2499</div>
                     </div>
                     <div class="package-body">
                         <div class="package-details">
@@ -561,7 +561,7 @@ $left=2;
                     <div class="bonus-badge">+20% BONUS</div>
                     <div class="package-header">
                         <div class="package-rank">DIAMOND</div>
-                        <div class="package-range">$250 to $4999</div>
+                        <div class="package-range">&#8377;250 to &#8377;4999</div>
                     </div>
                     <div class="package-body">
                         <div class="package-details">
@@ -591,7 +591,7 @@ $left=2;
                     <div class="bonus-badge">+20% BONUS</div>
                     <div class="package-header">
                         <div class="package-rank">STAR DIAMOND</div>
-                        <div class="package-range">$250 to $9999</div>
+                        <div class="package-range">&#8377;250 to &#8377;9999</div>
                     </div>
                     <div class="package-body">
                         <div class="package-details">
@@ -651,7 +651,7 @@ $left=2;
                     </div>
                     
                     <div class="mb-3">
-                        <label for="investmentAmount" class="form-label">Investment Amount ($)</label>
+                        <label for="investmentAmount" class="form-label">Investment Amount (&#8377;)</label>
                         <input type="number" class="form-control" id="investmentAmount" name="amount" placeholder="Enter amount" min="0" step="0.01" required>
                         <div class="form-text text-muted" id="amountRange"></div>
                         <div class="invalid-feedback" id="amountError"></div>
@@ -660,11 +660,11 @@ $left=2;
                     <div class="return-display">
                         <div class="d-flex justify-content-between align-items-center">
                             <span>Daily Return:</span>
-                            <span class="return-value" id="dailyReturn">$0.00</span>
+                            <span class="return-value" id="dailyReturn">&#8377;0.00</span>
                         </div>
                         <div class="d-flex justify-content-between align-items-center mt-2">
                             <span>Total Return (Full Period):</span>
-                            <span class="return-value" id="totalReturn">$0.00</span>
+                            <span class="return-value" id="totalReturn">&#8377;0.00</span>
                         </div>
                     </div>
                 </form>
@@ -738,7 +738,7 @@ $left=2;
                 
                 // Set modal values
                 packageNameInput.value = currentPackage.name;
-                amountRangeText.textContent = `Amount range: $${currentPackage.min} - $${currentPackage.max}`;
+                amountRangeText.textContent = `Amount range: ₹${currentPackage.min} - ₹${currentPackage.max}`;
                 investmentAmountInput.min = currentPackage.min;
                 investmentAmountInput.max = currentPackage.max;
                 investmentAmountInput.value = '';
@@ -749,8 +749,8 @@ $left=2;
                 selectedDaysInput.value = currentPackage.days;
                 
                 // Reset displays
-                dailyReturnDisplay.textContent = '$0.00';
-                totalReturnDisplay.textContent = '$0.00';
+                dailyReturnDisplay.textContent = '₹0.00';
+                totalReturnDisplay.textContent = '₹0.00';
                 
                 // Clear any previous errors
                 amountErrorDiv.textContent = '';
@@ -773,10 +773,10 @@ $left=2;
             // Validate amount
             if (amount > 0) {
                 if (amount < currentPackage.min || amount > currentPackage.max) {
-                    amountErrorDiv.textContent = `Amount must be between $${currentPackage.min} and $${currentPackage.max}`;
+                    amountErrorDiv.textContent = `Amount must be between ₹${currentPackage.min} and ₹${currentPackage.max}`;
                     this.classList.add('is-invalid');
-                    dailyReturnDisplay.textContent = '$0.00';
-                    totalReturnDisplay.textContent = '$0.00';
+                    dailyReturnDisplay.textContent = '₹0.00';
+                    totalReturnDisplay.textContent = '₹0.00';
                     return;
                 } else {
                     amountErrorDiv.textContent = '';
@@ -788,11 +788,11 @@ $left=2;
                 const totalReturn = dailyReturn * currentPackage.days;
                 
                 // Update displays
-                dailyReturnDisplay.textContent = `$${dailyReturn.toFixed(2)}`;
-                totalReturnDisplay.textContent = `$${totalReturn.toFixed(2)}`;
+                dailyReturnDisplay.textContent = `₹${dailyReturn.toFixed(2)}`;
+                totalReturnDisplay.textContent = `₹${totalReturn.toFixed(2)}`;
             } else {
-                dailyReturnDisplay.textContent = '$0.00';
-                totalReturnDisplay.textContent = '$0.00';
+                dailyReturnDisplay.textContent = '₹0.00';
+                totalReturnDisplay.textContent = '₹0.00';
             }
         });
         
@@ -806,7 +806,7 @@ $left=2;
             const amount = parseFloat(investmentAmountInput.value) || 0;
             
             if (amount === 0 || amount < currentPackage.min || amount > currentPackage.max) {
-                amountErrorDiv.textContent = `Please enter a valid amount between $${currentPackage.min} and $${currentPackage.max}`;
+                amountErrorDiv.textContent = `Please enter a valid amount between ₹${currentPackage.min} and ₹${currentPackage.max}`;
                 investmentAmountInput.classList.add('is-invalid');
                 return;
             }

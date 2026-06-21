@@ -153,10 +153,47 @@ $utube = $data['utube'] ?? "#";
           
                 <div class="col-xl-12">
             <div class="row">
-<div align="center" style="background:#fff;color:#000;border-radius:10px;margin:0 10px;width:95%;">
-        <script src="https://widgets.coingecko.com/gecko-coin-price-marquee-widget.js"></script>
-<gecko-coin-price-marquee-widget locale="en" dark-mode="true" outlined="true" coin-ids="" initial-currency="usd"></gecko-coin-price-marquee-widget></div>
-<div>&nbsp;</div>
+<div style="background:linear-gradient(90deg,#0d0d0d,#1a1a1a);border:1px solid #333;border-radius:10px;margin:0 10px 12px;width:97%;padding:10px 16px;overflow:hidden;display:flex;align-items:center;gap:12px;">
+  <span style="color:#f59e0b;font-weight:700;font-size:13px;white-space:nowrap;">&#x20B9; LIVE</span>
+  <div style="overflow:hidden;flex:1;">
+    <div id="inr-ticker" style="display:inline-flex;gap:30px;white-space:nowrap;animation:inrScroll 25s linear infinite;">
+      <span style="color:#aaa;font-size:13px;">Loading INR prices...</span>
+    </div>
+  </div>
+</div>
+<style>
+@keyframes inrScroll {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+</style>
+<script>
+fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum,tether,binancecoin,solana,ripple,tron&vs_currencies=inr&include_24hr_change=true')
+  .then(r=>r.json()).then(data=>{
+    const coins=[
+      {id:'bitcoin',label:'BTC',icon:'&#x20BF;'},
+      {id:'ethereum',label:'ETH',icon:'&#x39E;'},
+      {id:'tether',label:'USDT',icon:'&#x20AE;'},
+      {id:'binancecoin',label:'BNB',icon:'&#9679;'},
+      {id:'solana',label:'SOL',icon:'&#x25CF;'},
+      {id:'ripple',label:'XRP',icon:'&#x2715;'},
+      {id:'tron',label:'TRX',icon:'&#x25B2;'},
+    ];
+    let html='';
+    coins.forEach(c=>{
+      if(!data[c.id]) return;
+      const price='&#x20B9;'+Number(data[c.id].inr).toLocaleString('en-IN');
+      const ch=data[c.id].inr_24h_change;
+      const chColor=ch>=0?'#4ade80':'#f87171';
+      const chText=(ch>=0?'&#9650;':'&#9660;')+Math.abs(ch).toFixed(2)+'%';
+      html+=`<span style="font-size:13px;font-weight:600;color:#fff;">${c.icon} ${c.label} <span style="color:#f59e0b;">${price}</span> <span style="color:${chColor};">${chText}</span></span><span style="color:#444;margin:0 5px;">|</span>`;
+    });
+    const el=document.getElementById('inr-ticker');
+    el.innerHTML=html+html;
+  }).catch(()=>{
+    document.getElementById('inr-ticker').innerHTML='<span style="color:#aaa;font-size:13px;">Live prices unavailable</span>';
+  });
+</script>
 </div></div>
 <?php
 $userid = getMember($conn, $_SESSION['mid'], 'userid');
@@ -331,7 +368,7 @@ $latestPackage = $row['package'] ?? "No Investment";
                           
                         <div class="pt-3">
                           <h4 class="counter" style="visibility: visible">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:middle;margin-right:2px;"><polygon points="12 2 2 19 22 19"/><line x1="12" y1="2" x2="12" y2="19"/><line x1="2" y1="19" x2="12" y2="10"/><line x1="22" y1="19" x2="12" y2="10"/></svg> <?=getDirectBonusMember($conn,$userid)?>
+                            INR <?=number_format(getDirectBonusMember($conn,$userid),2)?>
                           </h4>
                           <div class="pt-3">
                             <small class="text-success">+ 0.8%</small>
@@ -379,7 +416,7 @@ $latestPackage = $row['package'] ?? "No Investment";
                           
                         <div class="pt-3">
                           <h4 class="counter" style="visibility: visible">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:middle;margin-right:2px;"><polygon points="12 2 2 19 22 19"/><line x1="12" y1="2" x2="12" y2="19"/><line x1="2" y1="19" x2="12" y2="10"/><line x1="22" y1="19" x2="12" y2="10"/></svg> <?=getROIBonus($conn,$userid)?>
+                            INR <?=number_format(getROIBonus($conn,$userid),2)?>
                           </h4>
                           <div class="pt-3">
                             <small class="text-success">+ 0.8%</small>
@@ -425,7 +462,7 @@ $latestPackage = $row['package'] ?? "No Investment";
                           
                         <div class="pt-3">
                           <h4 class="counter" style="visibility: visible">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:middle;margin-right:2px;"><polygon points="12 2 2 19 22 19"/><line x1="12" y1="2" x2="12" y2="19"/><line x1="2" y1="19" x2="12" y2="10"/><line x1="22" y1="19" x2="12" y2="10"/></svg> <?=getLevelROIBonus($conn,$userid)?>
+                            INR <?=number_format(getLevelROIBonus($conn,$userid),2)?>
                           </h4>
                           <div class="pt-3">
                             <small class="text-success">+ 0.8%</small>
@@ -473,7 +510,7 @@ $latestPackage = $row['package'] ?? "No Investment";
                           
                         <div class="pt-3">
                           <h4 class="counter" style="visibility: visible">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:middle;margin-right:2px;"><polygon points="12 2 2 19 22 19"/><line x1="12" y1="2" x2="12" y2="19"/><line x1="2" y1="19" x2="12" y2="10"/><line x1="22" y1="19" x2="12" y2="10"/></svg> <?=getRewardddBonus($conn,$userid)?>
+                            INR <?=number_format(getRewardddBonus($conn,$userid),2)?>
                           </h4>
                           <div class="pt-3">
                             <small class="text-success">+ 0.8%</small>
@@ -521,7 +558,7 @@ $latestPackage = $row['package'] ?? "No Investment";
                           
                         <div class="pt-3">
                           <h4 class="counter" style="visibility: visible">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:middle;margin-right:2px;"><polygon points="12 2 2 19 22 19"/><line x1="12" y1="2" x2="12" y2="19"/><line x1="2" y1="19" x2="12" y2="10"/><line x1="22" y1="19" x2="12" y2="10"/></svg> <?=geTotalCommission($conn,$userid)?>
+                            INR <?=number_format(geTotalCommission($conn,$userid),2)?>
                           </h4>
                           <div class="pt-3">
                             <small class="text-success">+ 0.8%</small>
@@ -571,7 +608,7 @@ $latestPackage = $row['package'] ?? "No Investment";
                           
                         <div class="pt-3">
                           <h4 class="counter" style="visibility: visible">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:middle;margin-right:2px;"><polygon points="12 2 2 19 22 19"/><line x1="12" y1="2" x2="12" y2="19"/><line x1="2" y1="19" x2="12" y2="10"/><line x1="22" y1="19" x2="12" y2="10"/></svg> <?=getAvailableFundWallet($conn,$userid)?>
+                            INR <?=number_format(getAvailableFundWallet($conn,$userid),2)?>
                           </h4>
                           <div class="pt-3">
                             <small class="text-success">+ 0.8%</small>

@@ -16,11 +16,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         redirect('withdraw?case=new&e=7');
     }
 
-    $sql = "SELECT * FROM `imaksoft_member` WHERE `id`='" . trim($_SESSION['mid']) . "' AND `tpassword`='" . trim($_POST['tpassword']) . "'";
-    $res = query($conn, $sql);
-    if (numrows($res) <= 0) {
-        redirect('withdraw?case=new&e=6'); // Invalid transaction password
+    $tpass = trim($_POST['tpassword']);
+    $stmt_tp = $conn->prepare("SELECT id FROM `imaksoft_member` WHERE `id`=? AND `tpassword`=?");
+    $stmt_tp->bind_param("ss", $_SESSION['mid'], $tpass);
+    $stmt_tp->execute();
+    $stmt_tp->store_result();
+    if($stmt_tp->num_rows <= 0) {
+        redirect('withdraw?case=new&e=6');
     }
+    $stmt_tp->close();
 
     // Step 2: Time check — Everyday 8AM to 10PM IST
     $hour = (int)date('G');

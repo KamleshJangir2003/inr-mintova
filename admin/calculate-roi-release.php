@@ -1,24 +1,19 @@
 <?php
 function getLevelCalcuation($conn,$userid,$amount,$k)
 {
-if($k<=20)
-{
-$sponsor1=getMemberUserID($conn,$userid,'sponsor');
-if($sponsor1)
-{
-$level='Level '.$k;
-$percentage=getSettingsLevelROI($conn,$level,'percentage');
-$bonus=($amount*$percentage)/100;
-if($bonus>0)
-{
-$sqla="INSERT INTO `imaksoft_commission_level_roi` (`userid`,`fromid`,`level`,`dailybonus`,`percentage`,`bonus`,`date`) VALUES('".$sponsor1."','".$userid."','".$level."','".$amount."','".$percentage."','".$bonus."','".date('Y-m-d')."')";
-$resa=query($conn,$sqla);
-}
-}
-
-$k=$k+1;
-getLevelCalcuation($conn,$sponsor1,$amount,$k);
-}
+    $currentUserid = $userid;
+    for($k = 1; $k <= 20; $k++) {
+        $sponsor1 = getMemberUserID($conn, $currentUserid, 'sponsor');
+        if(!$sponsor1) break;
+        $level = 'Level ' . $k;
+        $percentage = getSettingsLevelROI($conn, $level, 'percentage');
+        $bonus = ($amount * $percentage) / 100;
+        if($bonus > 0) {
+            $sqla = "INSERT INTO `imaksoft_commission_level_roi` (`userid`,`fromid`,`level`,`dailybonus`,`percentage`,`bonus`,`date`) VALUES('".$sponsor1."','".$userid."','".$level."','".$amount."','".$percentage."','".$bonus."','".date('Y-m-d')."')";
+            query($conn, $sqla);
+        }
+        $currentUserid = $sponsor1;
+    }
 }
 
 //------------------------------------------------//

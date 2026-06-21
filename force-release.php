@@ -106,7 +106,7 @@ function getLevelCalcuation($conn, $userid, $amount, $k)
                         $resa = query($conn, $sqla);
                         
                         if ($resa) {
-                            echo "<span style='color:green;'>✓ Level $k Commission PAID: $sponsor1 received $$bonus ($percentage% of $$amount) from $userid</span><br>";
+                            echo "<span style='color:green;'>✓ Level $k Commission PAID: $sponsor1 received INR " . number_format($bonus,2) . " (" . $percentage . "% of INR " . number_format($amount,2) . ") from $userid</span><br>";
                         } else {
                             echo "<span style='color:red;'>✗ Failed to insert commission for $sponsor1 at Level $k</span><br>";
                         }
@@ -166,7 +166,7 @@ function storePendingCommission($conn, $sponsorid, $fromid, $level, $amount)
                    ('$sponsorid', '$fromid', '$levelName', '$amount', '$percentage', '$bonus', CURDATE(), 'pending')";
             query($conn, $sql);
             
-            echo "<span style='color:blue;'>📝 Pending commission stored for $sponsorid at $levelName ($$bonus)</span><br>";
+            echo "<span style='color:blue;'>📝 Pending commission stored for $sponsorid at $levelName (INR " . number_format($bonus,2) . ")</span><br>";
         }
     }
 }
@@ -219,7 +219,7 @@ if ($numr > 0)
     while ($fetchr = fetcharray($resr)) 
     {
         echo "<hr>";
-        echo "<h4>Processing ROI for user: " . $fetchr['userid'] . " (Amount: $" . $fetchr['bonus'] . ")</h4>";
+        echo "<h4>Processing ROI for user: " . $fetchr['userid'] . " (Amount: INR " . $fetchr['bonus'] . ")</h4>";
         
         // UPDATE STATUS TO RELEASED
         $sqlr2 = "
@@ -261,7 +261,7 @@ if ($numr > 0)
     $summary_row = fetcharray($summary_result);
     
     echo "Total commissions generated today: " . $summary_row['total_commissions'] . "<br>";
-    echo "Total payout amount: $" . number_format($summary_row['total_payout'], 2) . "<br>";
+    echo "Total payout amount: INR " . number_format($summary_row['total_payout'], 2) . "<br>";
     echo "Levels paid: " . ($summary_row['levels_paid'] ? $summary_row['levels_paid'] : 'None') . "<br>";
     
     // Show pending commissions
@@ -271,7 +271,7 @@ if ($numr > 0)
     $pending_result = query($conn, $pending_sql);
     $pending_row = fetcharray($pending_result);
     
-    echo "Pending commissions (requirements not met): " . $pending_row['pending_count'] . " (Total: $" . number_format($pending_row['pending_total'], 2) . ")<br>";
+    echo "Pending commissions (requirements not met): " . $pending_row['pending_count'] . " (Total: INR " . number_format($pending_row['pending_total'], 2) . ")<br>";
     
 } else {
     echo "No ROI records to process today.<br>";
@@ -326,7 +326,7 @@ if (numrows($final_result) > 0) {
         echo "<td>{$row['level']}</td>";
         echo "<td>{$requirements}</td>";
         echo "<td>{$row['count']}</td>";
-        echo "<td>$" . number_format($row['total'], 2) . "</td>";
+        echo "<td>INR " . number_format($row['total'], 2) . "</td>";
         echo "</tr>";
     }
     echo "</table>";
