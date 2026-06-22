@@ -1,10 +1,19 @@
 Options +FollowSymlinks
 RewriteEngine On
-RewriteBase /inr/admin/
 
+# Remove .php extension
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteCond %{REQUEST_FILENAME}.php -f
 RewriteRule ^(.*)$ $1.php [L]
 
+# Block direct .php access - Local
 RewriteCond %{THE_REQUEST} ^[^\ ]*\ /[^\ ]*\.php
+RewriteCond %{HTTP_HOST} ^localhost$ [OR]
+RewriteCond %{HTTP_HOST} ^127\.0\.0\.1$
+RewriteRule ^(.*)\.php$ /Inr-Plan/admin/$1 [R=301,L]
+
+# Block direct .php access - Live
+RewriteCond %{THE_REQUEST} ^[^\ ]*\ /[^\ ]*\.php
+RewriteCond %{HTTP_HOST} !^localhost$
+RewriteCond %{HTTP_HOST} !^127\.0\.0\.1$
 RewriteRule ^(.*)\.php$ /inr/admin/$1 [R=301,L]

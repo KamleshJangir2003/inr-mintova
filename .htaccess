@@ -1,12 +1,28 @@
 Options +FollowSymlinks
 RewriteEngine On
-RewriteBase /inr/
 
-# Remove .php extension from URL (clean URLs)
+# Local XAMPP
+RewriteCond %{HTTP_HOST} ^localhost$ [OR]
+RewriteCond %{HTTP_HOST} ^127\.0\.0\.1$
+RewriteRule ^ - [E=BASE:/Inr-Plan/]
+
+# Live server
+RewriteCond %{HTTP_HOST} !^localhost$
+RewriteCond %{HTTP_HOST} !^127\.0\.0\.1$
+RewriteRule ^ - [E=BASE:/inr/]
+
+# Remove .php extension
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteCond %{REQUEST_FILENAME}.php -f
 RewriteRule ^(.*)$ $1.php [L]
 
-# Block direct access to .php files (redirect to clean URL)
+# Block direct .php access
 RewriteCond %{THE_REQUEST} ^[^\ ]*\ /[^\ ]*\.php
+RewriteCond %{HTTP_HOST} ^localhost$ [OR]
+RewriteCond %{HTTP_HOST} ^127\.0\.0\.1$
+RewriteRule ^(.*)\.php$ /Inr-Plan/$1 [R=301,L]
+
+RewriteCond %{THE_REQUEST} ^[^\ ]*\ /[^\ ]*\.php
+RewriteCond %{HTTP_HOST} !^localhost$
+RewriteCond %{HTTP_HOST} !^127\.0\.0\.1$
 RewriteRule ^(.*)\.php$ /inr/$1 [R=301,L]
