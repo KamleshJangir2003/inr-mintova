@@ -1,6 +1,6 @@
 Options +FollowSymlinks
 RewriteEngine On
-RewriteBase /Inr-Plan/mem/
+RewriteBase /inr/mem/
 
 # Remove .php extension
 RewriteCond %{REQUEST_FILENAME} !-d
@@ -9,4 +9,4 @@ RewriteRule ^([^.]+)$ $1.php [L]
 
 # Block direct .php access
 RewriteCond %{THE_REQUEST} ^[^\ ]*\ /[^\ ]*\.php
-RewriteRule ^(.*)\.php$ /Inr-Plan/mem/$1 [R=301,L]
+RewriteRule ^(.*)\.php$ /inr/mem/$1 [R=301,L]
